@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat
 
 class DBC(val mainActivity: MainActivity) {
     val from = "2013-04-08 10:10:10"
-    val rootPath = "http://10.0.2.2:8090/myapp/01_android/"
+    val rootPath = "http://10.0.2.2:8090/myapp/01_jsp/"
     companion object {
         val dateFormat = SimpleDateFormat("yyyyMMddHHmm")
         val domFormat = SimpleDateFormat("yyyyMMdd")
@@ -323,6 +323,7 @@ class DBC(val mainActivity: MainActivity) {
 
         // jsp에 http연결
         var urlStr =rootPath+"mainLogin.jsp"
+        Log.d("tst",urlStr)
         var url = URL(urlStr)
         val httpClient = url.openConnection() as HttpURLConnection
 
