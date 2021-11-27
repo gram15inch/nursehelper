@@ -135,7 +135,7 @@ class DBC(val mainActivity: MainActivity) {
         var url = URL(urlStr)
         val httpClient = url.openConnection() as HttpURLConnection
 
-        setCookieHeader(httpClient)
+        //setCookieHeader(httpClient)
         httpClient.setRequestMethod("POST") // URL 요청에 대한 메소드 설정 : POST.
         httpClient.setRequestProperty("Accept-Charset", "UTF-8") // Accept-Charset 설정.
         httpClient.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;charset=UTF-8")
@@ -159,7 +159,7 @@ class DBC(val mainActivity: MainActivity) {
             Log.d("tst","ERROR ${httpClient.responseCode}")
             println("ERROR ${httpClient.responseCode}")
         }
-        getCookieHeader(httpClient)
+        //getCookieHeader(httpClient)
         //html 에서 body 추출
         val body = Jsoup.parse(Html).text()
 
@@ -210,7 +210,7 @@ class DBC(val mainActivity: MainActivity) {
         var urlStr =rootPath+"searchDocument.jsp"
         var url = URL(urlStr)
         val httpClient = url.openConnection() as HttpURLConnection
-        setCookieHeader(httpClient)
+        //setCookieHeader(httpClient)
         httpClient.setRequestMethod("POST") // URL 요청에 대한 메소드 설정 : POST.
         httpClient.setRequestProperty("Accept-Charset", "UTF-8") // Accept-Charset 설정.
         httpClient.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;charset=UTF-8")
@@ -234,7 +234,7 @@ class DBC(val mainActivity: MainActivity) {
             Log.d("tst","ERROR ${httpClient.responseCode}")
             println("ERROR ${httpClient.responseCode}")
         }
-        getCookieHeader(httpClient)
+        //getCookieHeader(httpClient)
         //html 에서 body 추출
         val body = Jsoup.parse(Html).text()
         if(body =="error"){
@@ -283,7 +283,8 @@ class DBC(val mainActivity: MainActivity) {
         var urlStr =rootPath+"inUpDocument.jsp"
         var url = URL(urlStr)
         val httpClient = url.openConnection() as HttpURLConnection
-        setCookieHeader(httpClient)
+
+        //setCookieHeader(httpClient)
         httpClient.setRequestMethod("POST") // URL 요청에 대한 메소드 설정 : POST.
         httpClient.setRequestProperty("Accept-Charset", "UTF-8") // Accept-Charset 설정.
         httpClient.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;charset=UTF-8")
@@ -307,7 +308,7 @@ class DBC(val mainActivity: MainActivity) {
             Log.d("tst","ERROR ${httpClient.responseCode}")
             println("ERROR ${httpClient.responseCode}")
         }
-        getCookieHeader(httpClient)
+        //getCookieHeader(httpClient)
 
         //html 에서 body 추출
         val body = Jsoup.parse(Html).text()
@@ -327,7 +328,7 @@ class DBC(val mainActivity: MainActivity) {
         var url = URL(urlStr)
         val httpClient = url.openConnection() as HttpURLConnection
 
-        setCookieHeader(httpClient)
+        //setCookieHeader(httpClient)
         httpClient.setRequestMethod("POST") // URL 요청에 대한 메소드 설정 : POST.
         httpClient.setRequestProperty("Accept-Charset", "UTF-8") // Accept-Charset 설정.
         httpClient.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;charset=UTF-8")
@@ -352,7 +353,7 @@ class DBC(val mainActivity: MainActivity) {
             Log.d("tst","ERROR ${httpClient.responseCode}")
             println("ERROR ${httpClient.responseCode}")
         }
-        getCookieHeader(httpClient)
+        //getCookieHeader(httpClient)
 
         //html 에서 body 추출
         val body = Jsoup.parse(Html).text()
@@ -393,15 +394,6 @@ class DBC(val mainActivity: MainActivity) {
             Log.d("tst","http ok")
             try {
                 Html = readStream(httpClient.inputStream)
-
-/*   --
-                val reader =
-                      BufferedReader(InputStreamReader(httpClient.getInputStream(), "UTF-8"))
-                  var line: String?
-                  var data = ""
-                  while (reader.readLine().also { line = it } != null) {
-                      data += line
-                  }*/
 
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -450,15 +442,6 @@ class DBC(val mainActivity: MainActivity) {
             Log.d("tst","http ok")
             try {
                 Html = readStream(httpClient.inputStream)
-
-/*   --
-                val reader =
-                      BufferedReader(InputStreamReader(httpClient.getInputStream(), "UTF-8"))
-                  var line: String?
-                  var data = ""
-                  while (reader.readLine().also { line = it } != null) {
-                      data += line
-                  }*/
 
             } catch (e: Exception) {
                 e.printStackTrace()

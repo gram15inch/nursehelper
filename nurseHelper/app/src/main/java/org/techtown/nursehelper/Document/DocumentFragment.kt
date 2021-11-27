@@ -51,11 +51,15 @@ class DocumentFragment : Fragment() {
 
         //토글 변경시 어답터 업데이트
         binding.searchTg.addOnButtonCheckedListener { group, checkedId, isChecked ->
-            if(isChecked)
+            if(searchView.query.toString()=="")
+                binding.searchRecycler.visibility = View.INVISIBLE
+            else if(isChecked)
                 updateAdapter(searchView.query.toString())
         }
         binding.dateTg.addOnButtonCheckedListener { group, checkedId, isChecked ->
-            if(isChecked)
+            if(searchView.query.toString()=="")
+                binding.searchRecycler.visibility = View.INVISIBLE
+            else if(isChecked)
                 updateAdapter(searchView.query.toString())
 
         }
