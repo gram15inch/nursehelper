@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/documentFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="org.techtown.nursehelper.Home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/documentFragment"
+        android:name="org.techtown.nursehelper.Document.DocumentFragment"
+        android:label="fragment_document"
+        tools:layout="@layout/fragment_document" />
+    <fragment
+        android:id="@+id/scheduleFragment"
+        android:name="org.techtown.nursehelper.Schedule.ScheduleFragment"
+        android:label="fragment_schedule"
+        tools:layout="@layout/fragment_schedule" />
+       <!-- <fragment
+        android:id="@+id/StockFragment"
+        android:name="org.techtown.nursehelper.StockFragment"
+        android:label="fragment_stock"
+        tools:layout="@layout/fragment_stock" />-->
+</navigation>

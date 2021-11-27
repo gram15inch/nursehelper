@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Schedule.day_item_fragment.DayItemDetailFragment">
+
+    <ImageView
+        android:id="@+id/mainColorView"
+        android:layout_width="20dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="56dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_img"
+        tools:srcCompat="@color/purple_500" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/colorRecycle"
+        android:layout_width="280dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="80dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/mainColorView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mainColorView" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/prevBtn"
+        android:layout_width="30dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/back"
+        android:backgroundTint="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/textNameDetail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="50dp"
+        android:background="@android:color/transparent"
+        android:hint="input"
+        android:imeOptions="actionDone"
+        android:inputType="textNoSuggestions"
+        android:minWidth="48dp"
+
+        android:minHeight="48dp"
+        android:paddingLeft="10dp"
+        android:singleLine="true"
+        android:text="이름"
+        android:textColorHint="@android:color/darker_gray"
+        android:textCursorDrawable="@drawable/text_cursor"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/name_img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/name_img" />
+
+
+    <EditText
+        android:id="@+id/textAddDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="50dp"
+        android:background="@android:color/transparent"
+        android:hint="input"
+        android:inputType="textNoSuggestions|textMultiLine"
+
+
+        android:maxLines="3"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:paddingLeft="10dp"
+        android:text="주소"
+
+        android:textCursorDrawable="@drawable/text_cursor"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textStart" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/addrSaveBtn"
+        android:layout_width="74dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:text="save"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textStart"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="50dp"
+        android:text="날짜"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/date_img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/date_img" />
+
+    <TextView
+        android:id="@+id/textEnd"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="50dp"
+        android:text="날짜"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textStart" />
+
+    <ImageView
+        android:id="@+id/name_img"
+        android:layout_width="31dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/idcard"
+        app:layout_constraintEnd_toStartOf="@+id/textNameDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/prevBtn" />
+
+    <ImageView
+        android:id="@+id/date_img"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="13dp"
+        android:src="@drawable/clock1"
+        app:layout_constraintEnd_toStartOf="@+id/textStart"
+        app:layout_constraintHorizontal_bias="0.73"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_img" />
+
+    <ImageView
+        android:id="@+id/add_img"
+        android:layout_width="31dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="15dp"
+        android:src="@drawable/placeholder"
+        app:layout_constraintEnd_toStartOf="@+id/textAddDetail"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date_img" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

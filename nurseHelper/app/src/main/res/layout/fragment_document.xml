@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="@color/bgGrey"
+    android:backgroundTintMode="src_over"
+    tools:context=".Document.DocumentFragment">
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/searchTg"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        app:checkedButton="@id/nameTgBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+
+        <Button
+            android:id="@+id/nameTgBtn"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="이름"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/addrTgBtn"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="주소"
+            android:textSize="16sp" />
+
+
+        <Button
+            android:id="@+id/pnoTgBtn"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="환자번호"
+            android:textSize="16sp" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/dateTg"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        app:checkedButton="@id/weekTgBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchTg"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+
+        <Button
+            android:id="@+id/weekTgBtn"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="1주일"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/monthTgBtn"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="한달"
+            android:textSize="16sp" />
+
+
+        <Button
+            android:id="@+id/yearTgBtn"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="일년"
+            android:textSize="16sp" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:contentInsetStart="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateTg">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <ImageView
+                android:id="@+id/searchBarBack"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/color_item_bg"
+                android:backgroundTint="#57C8C8C8"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+
+                android:layout_marginEnd="32dp"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.625"
+                app:queryHint="검색어를 입력하시오">
+
+            </androidx.appcompat.widget.SearchView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchRecycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

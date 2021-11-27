@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Login.ResistFragment">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/textRId"
+            android:layout_width="245dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="15dp"
+            android:ems="10"
+            android:hint="아이디"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/textRPw1"
+            android:layout_width="245dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="15dp"
+            android:ems="10"
+            android:hint="비밀번호"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/textRPw2"
+            android:layout_width="245dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="15dp"
+            android:ems="10"
+            android:hint="비밀번호 확인"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/textRName"
+            android:layout_width="245dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="15dp"
+            android:ems="10"
+            android:hint="이름"
+            android:inputType="textPersonName" />
+
+        <RadioGroup
+            android:id="@+id/radioGRSex"
+            android:layout_width="245dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="15dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioMRBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:text="남" />
+
+            <RadioButton
+                android:id="@+id/radioFRBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="10dp"
+                android:text="여" />
+
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/textIRPN"
+            android:layout_width="245dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="15dp"
+            android:ems="10"
+            android:hint="연락처"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/resisterBtn2"
+            android:layout_width="245dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@android:color/darker_gray"
+            android:text="제출"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</FrameLayout>

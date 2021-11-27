@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainCon"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="1dp"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/textDay"
+        android:layout_width="0dp"
+        android:layout_height="15dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:gravity="top"
+        android:text="0"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/userColors"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="1dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textDay">
+
+        <ImageView
+            android:id="@+id/one"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:layout_margin="1dp"
+            android:background="@color/purple_200"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/two"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:layout_margin="1dp"
+            android:background="@color/teal_200"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/three"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:layout_margin="1dp"
+            android:background="@color/design_default_color_secondary_variant"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/four"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:layout_margin="1dp"
+            android:background="@color/purple_500"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/other"
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:layout_gravity="top"
+            android:layout_margin="1dp"
+            android:gravity="center_horizontal|top"
+            android:text="0"
+            android:textSize="10sp"
+            android:visibility="invisible" />
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

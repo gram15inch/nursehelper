@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="Home"
+        android:drawableTint="#000000"/>
+    <item
+        android:id="@+id/documentFragment"
+        android:drawableTint="#000000"
+        android:icon="@drawable/ic_baseline_article_24"
+        android:title="document" />
+    <item
+        android:id="@+id/scheduleFragment"
+        android:icon="@drawable/ic_baseline_calendar_today_24"
+        android:title="schedule"
+        android:drawableTint="#000000"/>
+ <!--   <item
+        android:id="@+id/StockFragment"
+        android:icon="@drawable/ic_baseline_cloud_24"
+        android:title="stock"
+        android:drawableTint="#000000"/>-->
+</menu>
