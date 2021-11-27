@@ -69,6 +69,17 @@ class MainActivity : AppCompatActivity() {
             val id = userInfo.getString("id", null)
             val pw = userInfo.getString("pw", null)
             if(id != null && pw != null){
+
+                //splash
+                binding.imgLogo.visibility = View.VISIBLE
+                Handler(Looper.getMainLooper()).postDelayed({
+                    val transition: Transition = Fade()
+                    transition.setDuration(400)
+                    transition.addTarget(binding.imgLogo)
+                    TransitionManager.beginDelayedTransition(binding.root, transition)
+                    binding.imgLogo.visibility = View.GONE
+                }, 1200)
+
                 CoroutineScope(Dispatchers.Main).launch {
                     var rt = -1
                     CoroutineScope(Dispatchers.Default).async {
@@ -77,19 +88,10 @@ class MainActivity : AppCompatActivity() {
                     when(rt){
                         //성공시
                         1 -> {Log.d("tst","loginSuccess")
+
+
+
                             loginSuccess(id,pw)
-                            //splash
-                            binding.imgLogo.visibility = View.VISIBLE
-                            Handler(Looper.getMainLooper()).postDelayed({
-                                val transition: Transition = Fade()
-                                transition.setDuration(400)
-                                transition.addTarget(binding.imgLogo)
-                                TransitionManager.beginDelayedTransition(binding.root, transition)
-                                binding.imgLogo.visibility = View.GONE
-                            }, 1200)
-
-
-                            //updateDBdata("user1","2021")
 
                         }
                         //실패시

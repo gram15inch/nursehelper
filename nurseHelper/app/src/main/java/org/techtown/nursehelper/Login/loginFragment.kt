@@ -2,6 +2,11 @@ package org.techtown.nursehelper.Login
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.transition.Fade
+import android.transition.Transition
+import android.transition.TransitionManager
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -58,6 +63,17 @@ class loginFragment : Fragment() {
                 when(rt){
                     //성공시
                     1 -> {setUserInfoIdInSharedPref(id,pw)//id,pw 공유변수에 저장!
+
+                        //splash
+                        mainActivity.binding.imgLogo.visibility = View.VISIBLE
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            val transition: Transition = Fade()
+                            transition.setDuration(400)
+                            transition.addTarget(mainActivity.binding.imgLogo)
+                            TransitionManager.beginDelayedTransition(binding.root, transition)
+                            mainActivity.binding.imgLogo.visibility = View.GONE
+                        }, 600)
+
                         loginSuccess(id,pw)
                     }
                     //실패시
