@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                     transition.addTarget(binding.imgLogo)
                     TransitionManager.beginDelayedTransition(binding.root, transition)
                     binding.imgLogo.visibility = View.GONE
-                }, 1200)
+                }, 800)
 
                 CoroutineScope(Dispatchers.Main).launch {
                     var rt = -1
@@ -88,11 +88,7 @@ class MainActivity : AppCompatActivity() {
                     when(rt){
                         //성공시
                         1 -> {Log.d("tst","loginSuccess")
-
-
-
                             loginSuccess(id,pw)
-
                         }
                         //실패시
                         0->{
@@ -220,18 +216,18 @@ class MainActivity : AppCompatActivity() {
         }
         return searchedList
     }
- /*   fun deleteUser(userItem:userSchedule){
-        val user12 :userSchedule
-        for(user in userItems){
+    fun deleteUser(userItem:userSchedule){
+        for(user in dbUserItems){
             if (user.idCode == userItem.idCode) {
-                userItems.remove(user)
+                Log.d("tst","del : ${user}")
+                dbUserItems.remove(user)
                 break
             }
         }
-    }*/
+    }
     //--
     fun getYearSchedule(id:String,day:String):List<userSchedule>{
-        return dbc.getSchedule(id,"2021")
+        return dbc.getSchedule(id,day)// 11/28 임시수정
     }
 
     fun getDaySchedule(id: String,day:String):List<userSchedule>{
@@ -254,7 +250,6 @@ class MainActivity : AppCompatActivity() {
             return -1
         else{
             updateDBdata(id,Calendar.getInstance().get(Calendar.YEAR).toString())
-
             return 1
         }
 
@@ -278,6 +273,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
 
     //Login 객체함수
     val login  = object : (String,String)->Int{

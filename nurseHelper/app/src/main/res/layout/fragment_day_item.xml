@@ -8,7 +8,7 @@
     tools:context=".Schedule.day_item_fragment.DayItemFragment">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/dayItemTxt"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:text="일정"

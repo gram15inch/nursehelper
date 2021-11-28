@@ -72,7 +72,7 @@ class loginFragment : Fragment() {
                             transition.addTarget(mainActivity.binding.imgLogo)
                             TransitionManager.beginDelayedTransition(binding.root, transition)
                             mainActivity.binding.imgLogo.visibility = View.GONE
-                        }, 600)
+                        }, 700)
 
                         loginSuccess(id,pw)
                     }

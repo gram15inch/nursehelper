@@ -50,12 +50,15 @@ class DayItemFragment(var day: Day) : Fragment() {
         var dayUserItems = mainActivity.searchData(day.calendar.time)
         var Adapter = setAdapter(dayUserItems)
         //전체삭제
-        binding.textView2.setOnClickListener {
+        binding.dayItemTxt.setOnClickListener {
             for(dayUserItem in dayUserItems)
-                //mainActivity.deleteUser(dayUserItem)
+                //Log.d("tst","$dayUserItem")
+                mainActivity.deleteUser(dayUserItem)
             dayItemUpdate?.invoke(day)
-            //pagerAdapterReflesh?.invoke()
+            pagerAdapterReflesh?.invoke()
             //Adapter.notifyDataSetChanged()
+            Log.d("tst","Delete db")
+
 
         }
     }
