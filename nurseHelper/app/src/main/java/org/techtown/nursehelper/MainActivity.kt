@@ -136,6 +136,7 @@ class MainActivity : AppCompatActivity() {
             addToBackStack("login_tag")
             commit()
         }
+        Log.d("tst","lfinit")
     }
 
     fun clearBackStack() {
