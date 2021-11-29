@@ -49,7 +49,7 @@ class DayItemFragment(var day: Day) : Fragment() {
         Log.d("day","dayViewCreated")
         var dayUserItems = mainActivity.searchData(day.calendar.time)
         var Adapter = setAdapter(dayUserItems)
-        //전체삭제
+        //전체삭제 -test
         binding.dayItemTxt.setOnClickListener {
             for(dayUserItem in dayUserItems)
                 //Log.d("tst","$dayUserItem")
@@ -58,9 +58,8 @@ class DayItemFragment(var day: Day) : Fragment() {
             pagerAdapterReflesh?.invoke()
             //Adapter.notifyDataSetChanged()
             Log.d("tst","Delete db")
-
-
         }
+
     }
 
     fun setAdapter(users : List<userSchedule>):DayItemAdapter{

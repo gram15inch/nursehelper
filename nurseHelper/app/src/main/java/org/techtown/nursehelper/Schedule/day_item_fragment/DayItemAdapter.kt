@@ -33,7 +33,6 @@ abstract class DayItemAdapter(var mainActivity: MainActivity):RecyclerView.Adapt
         return dayItemHolder(binding)
     }
 
-
     override fun getItemCount() : Int = Users.size
     inner class dayItemHolder(var binding:UserItemBinding):RecyclerView.ViewHolder(binding.root){}
 

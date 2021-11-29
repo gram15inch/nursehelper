@@ -37,10 +37,10 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        lateinit var todayAdapter : homeScheduleAdpater
+        var todayAdapter : homeScheduleAdpater
 
         CoroutineScope(Dispatchers.Main).launch {
-            lateinit var rt : List<userSchedule>
+           var rt : List<userSchedule> = listOf()
             CoroutineScope(Dispatchers.Default).async {
                 val sp1: SharedPreferences =  mainActivity.getSharedPreferences("userInfo", Context.MODE_PRIVATE)
                 var id = sp1.getString("id", null)
@@ -51,14 +51,15 @@ class HomeFragment : Fragment() {
                     Log.d("tsthome", today.time.toString())
                 }
             }.await()
-            when(rt){
-                //실패시
-                null -> {
+            Log.d("tsthome","await")
+
+            when(rt.size){
+                //데이터 없음
+                 0-> {
                     Log.d("tst","dbError")
                 }
-                //성공시
+                //데이터 있음
                 else->{
-
                     todayAdapter = homeScheduleAdpater(mainActivity,rt)
                     todayBinding.run{
                         textSectionTitle.text = "오늘 일정"
@@ -69,8 +70,11 @@ class HomeFragment : Fragment() {
                     //프레임안에 레이아웃 넣기
                     binding.todayFrame.addView(todayBinding.root)
 
+
                 }
             }
+
+
         }
 
 
