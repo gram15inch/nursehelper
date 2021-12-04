@@ -206,21 +206,20 @@ class MainActivity : AppCompatActivity() {
 
             calData.clear()
             calData.time = data.startTime
-            //Log.d("tst","$Month / $il")
-            if (calfocus.get(Calendar.MONTH) == calData.get(Calendar.MONTH))
-            // Log.d("tst","$Month = ${calData.get(Calendar.MONTH)}")
+            if (calfocus.get(Calendar.YEAR) == calData.get(Calendar.YEAR))
+                if (calfocus.get(Calendar.MONTH) == calData.get(Calendar.MONTH))
+                    if (calfocus.get(Calendar.DAY_OF_MONTH) == calData.get(Calendar.DAY_OF_MONTH)) {
+                        searchedList.add(data)
 
-                if (calfocus.get(Calendar.DAY_OF_MONTH) == calData.get(Calendar.DAY_OF_MONTH)) {
-                    searchedList.add(data)
-                    //Log.d("tst","${data.startTime}")
                 }
         }
         return searchedList
     }
-    fun deleteUser(userItem:userSchedule){
+    fun deleteUser(sid:Int){
         for(user in dbUserItems){
-            if (user.idCode == userItem.idCode) {
-                Log.d("tst","del : ${user}")
+            if (user.idCode == sid) {
+                Log.d("tst","del : ${user.idCode}==${sid}")
+
                 dbUserItems.remove(user)
                 break
             }

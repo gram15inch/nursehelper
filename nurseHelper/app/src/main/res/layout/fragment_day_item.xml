@@ -21,5 +21,6 @@
         android:layout_marginLeft="10dp"
         android:divider="#FFFFFF"
         android:dividerHeight="10dp"
-        android:scrollbars="none" />
+        android:scrollbars="none"
+        android:fillViewport="true"/>
 </LinearLayout>
