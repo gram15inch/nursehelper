@@ -1,6 +1,7 @@
 package org.techtown.nursehelper.Schedule.day_item_fragment
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,11 +13,16 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.techtown.nursehelper.MainActivity
 import org.techtown.nursehelper.R
 
 import org.techtown.nursehelper.calendarviewpager.Day
 import org.techtown.nursehelper.databinding.FragmentDayItemBinding
+import org.techtown.nursehelper.userDocument
 import org.techtown.nursehelper.userSchedule
 import java.text.SimpleDateFormat
 
@@ -91,7 +97,7 @@ class DayItemFragment(var day: Day) : Fragment() {
                     textAddr.text=Users[position].addr
                     textStart.text= dayItemFormat.format(Users[position].startTime)
                     textEnd.text=   dayItemFormat.format(Users[position].endTime)
-                    sid = users[position].idCode
+                    sno = users[position].idCode
                 }
 
 
@@ -109,8 +115,31 @@ class DayItemFragment(var day: Day) : Fragment() {
 
                     //아이템뷰 삭제
                     delBtn.setOnClickListener {
-                            mainActivity.deleteUser(sid)
-                        dayItemAdapterUpdate?.invoke(day)
+                        //id가져오기
+                        val id = getUserInfo()
+                        if(id != "") {
+
+                            CoroutineScope(Dispatchers.Main).launch {
+                                 var rt = 0
+                                CoroutineScope(Dispatchers.Default).async {
+                                    rt = mainActivity.dbc.deleteSchedule(id,sno.toString())
+                                }.await()
+                                when(rt){
+                                    //성공시
+                                    1-> {
+                                        mainActivity.deleteUser(sno)
+                                        dayItemAdapterUpdate?.invoke(day)
+                                    }
+                                    //실패시
+                                    -1 -> Log.d("tst","sche_del : dbError")
+                                   else -> Log.d("tst","sche_del : except error")
+
+                                }
+                            }
+
+                        }else
+                            Log.d("tst","sche_del : serInfo error")
+
                     }
                 }
 
@@ -138,6 +167,15 @@ class DayItemFragment(var day: Day) : Fragment() {
         var shape = ContextCompat.getDrawable(mainActivity, R.drawable.user_item_bg)
         shape?.setTint(color)
         binding.binding.swipeView.setBackground(shape)
+    }
+
+    fun getUserInfo():String{
+        val sp1: SharedPreferences =  mainActivity.getSharedPreferences("userInfo", Context.MODE_PRIVATE)
+        var id = sp1.getString("id", null)
+        if(id==null)
+            return ""
+        else
+            return id
     }
 
 }

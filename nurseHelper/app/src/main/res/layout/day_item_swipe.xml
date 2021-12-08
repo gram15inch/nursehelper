@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="sid"
+            name="sno"
             type="int" />
     </data>
 

@@ -101,7 +101,7 @@ class DocumentFragment : Fragment() {
     }
 
     fun getDocument(pcode:String,name:String,addr:String,date:String):List<userDocument>{
-        lateinit var documents :List<userDocument>
+        var documents = listOf<userDocument>()
         val sp1: SharedPreferences =  mainActivity.getSharedPreferences("userInfo", Context.MODE_PRIVATE)
         var id = sp1.getString("id", null)
         if(id==null)

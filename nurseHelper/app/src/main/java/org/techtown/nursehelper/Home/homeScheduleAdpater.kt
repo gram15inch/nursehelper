@@ -13,15 +13,13 @@ import org.techtown.nursehelper.databinding.UserItemHomeBinding
 import java.text.SimpleDateFormat
 import kotlin.properties.Delegates
 
-class homeScheduleAdpater(val mainActivity: MainActivity, pusers :List<userSchedule>): RecyclerView.Adapter<homeScheduleAdpater.homeScheduleItemHolder>() {
+class homeScheduleAdpater(val mainActivity: MainActivity): RecyclerView.Adapter<homeScheduleAdpater.homeScheduleItemHolder>() {
     val timeFormat = SimpleDateFormat("HH:mm")
 
     var Users: List<userSchedule> by Delegates.observable(emptyList()) { _, old, new ->
         userScheduleDiff(old, new).calculateDiff().dispatchUpdatesTo(this)
     }
-    init {
-        Users = pusers
-    }
+
     /**adapter 안의 users를 업데이트하는함수를 객체화 시킴*/
     /*  var UserUpdate : ((List<userItem>) -> Unit)? = object :(List<userItem>)->Unit{
           override fun invoke(users: List<userItem>) {

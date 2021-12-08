@@ -202,6 +202,55 @@ class DBC(val mainActivity: MainActivity) {
         return users
         }
     }
+    fun deleteSchedule(id:String, sno:String):Int{
+
+        var Html =""
+
+        // jsp에 http연결
+        var urlStr =rootPath+"deleteSchedule.jsp"
+        var url = URL(urlStr)
+        val httpClient = url.openConnection() as HttpURLConnection
+
+        //setCookieHeader(httpClient)
+        httpClient.setRequestMethod("POST") // URL 요청에 대한 메소드 설정 : POST.
+        httpClient.setRequestProperty("Accept-Charset", "UTF-8") // Accept-Charset 설정.
+        httpClient.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;charset=UTF-8")
+        var para = "id=$id&sno=$sno"
+        var os = OutputStreamWriter(httpClient.outputStream)
+        os.write(para)
+        os.flush()
+
+
+        //jsp 에서 html 받기
+        if (httpClient.responseCode == HttpURLConnection.HTTP_OK) {
+            Log.d("tst","http ok")
+            try {
+                Html = readStream(httpClient.inputStream)
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                httpClient.disconnect()
+            }
+        } else {
+            Log.d("tst","ERROR ${httpClient.responseCode}")
+            println("ERROR ${httpClient.responseCode}")
+        }
+        //getCookieHeader(httpClient)
+        //html 에서 body 추출
+        val body = Jsoup.parse(Html).text()
+
+
+        when(body){
+            "성공"-> return 1
+            "실패"-> return -1
+            else -> return 0
+        }
+    }
+    fun inUpdateSchedule( id :String, sno :String, pno:String, sdate:String, edate:String, color:String):Int{
+
+        return 1
+    }
 
     fun getDocument(id:String,pcode:String,name:String,addr:String,date:String):List<userDocument>{
         var users = mutableListOf<userDocument>()
@@ -379,7 +428,7 @@ class DBC(val mainActivity: MainActivity) {
         var url = URL(urlStr)
         val httpClient = url.openConnection() as HttpURLConnection
 
-        setCookieHeader(httpClient)
+        //setCookieHeader(httpClient)
         httpClient.setRequestMethod("POST") // URL 요청에 대한 메소드 설정 : POST.
         httpClient.setRequestProperty("Accept-Charset", "UTF-8") // Accept-Charset 설정.
         httpClient.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;charset=UTF-8")
@@ -404,7 +453,7 @@ class DBC(val mainActivity: MainActivity) {
             Log.d("tst","ERROR ${httpClient.responseCode}")
             println("ERROR ${httpClient.responseCode}")
         }
-        getCookieHeader(httpClient)
+        //getCookieHeader(httpClient)
         //html 에서 body 추출
         val body = Jsoup.parse(Html).text()
         Log.d("tst","connectOk : $body")

@@ -37,8 +37,15 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        var todayAdapter : homeScheduleAdpater
+        var todayAdapter = homeScheduleAdpater(mainActivity)
+        todayBinding.run{
+            textSectionTitle.text = "오늘 일정"
+            sectionRecyclerView.adapter = todayAdapter
+            sectionRecyclerView.layoutManager = LinearLayoutManager(activity)
+        }
 
+        //프레임안에 레이아웃 넣기
+        binding.todayFrame.addView(todayBinding.root)
         CoroutineScope(Dispatchers.Main).launch {
            var rt : List<userSchedule> = listOf()
             CoroutineScope(Dispatchers.Default).async {
@@ -47,8 +54,9 @@ class HomeFragment : Fragment() {
                 if(id==null){
                     Log.d("tsthome","id = null")
                 }else {
-                    rt = mainActivity.getDaySchedule(id, dateFormat.format(today.time))
-                    Log.d("tsthome", today.time.toString())
+                    //rt = mainActivity.getDaySchedule(id, dateFormat.format(today.time))
+                    rt = mainActivity.searchData(today.time)
+                    Log.d("tsthome", rt.size.toString())
                 }
             }.await()
             Log.d("tsthome","await")
@@ -56,20 +64,11 @@ class HomeFragment : Fragment() {
             when(rt.size){
                 //데이터 없음
                  0-> {
-                    Log.d("tst","dbError")
+                    Log.d("tst","home : 값 없음")
                 }
                 //데이터 있음
                 else->{
-                    todayAdapter = homeScheduleAdpater(mainActivity,rt)
-                    todayBinding.run{
-                        textSectionTitle.text = "오늘 일정"
-                        sectionRecyclerView.adapter = todayAdapter
-                        sectionRecyclerView.layoutManager = LinearLayoutManager(activity)
-                    }
-
-                    //프레임안에 레이아웃 넣기
-                    binding.todayFrame.addView(todayBinding.root)
-
+                    todayAdapter.Users =rt
 
                 }
             }
