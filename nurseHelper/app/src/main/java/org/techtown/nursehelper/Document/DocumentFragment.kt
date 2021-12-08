@@ -42,11 +42,12 @@ class DocumentFragment : Fragment() {
 
         //어답터 초기화
         Adapter = userDocumentAdapter(mainActivity)
-
+        Adapter.dateAdapter = this.dateAdapter
         //리클라이어 초기화
         binding.searchRecycler.run {
             adapter = Adapter
             layoutManager = LinearLayoutManager(activity)
+
         }
 
         //토글 변경시 어답터 업데이트
@@ -69,6 +70,8 @@ class DocumentFragment : Fragment() {
 
             //텍스트 변경시 (지금 사용안함)
             override fun onQueryTextChange(newText: String): Boolean {
+                if(newText == "")
+                    binding.searchRecycler.visibility = View.INVISIBLE
                 Log.d("tst", "submit:$newText")
                 return false
 
@@ -142,5 +145,11 @@ class DocumentFragment : Fragment() {
 
             }
         }
+    }
+    val dateAdapter = object : ()->Unit{
+        override fun invoke() {
+            updateAdapter(binding.searchView.query.toString())
+        }
+
     }
 }

@@ -18,6 +18,8 @@ class userDocumentAdapter(val mainActivity: MainActivity) : RecyclerView.Adapter
         userDocumentDiff(old, new).calculateDiff().dispatchUpdatesTo(this)
     }
 
+    //DocumentFragment에서 초기화
+    lateinit var dateAdapter: ()->Unit
     override fun onBindViewHolder(holder: documentItemHolder, position: Int) {
         holder.binding.apply {
             textName.text = Documents[position].name
@@ -29,7 +31,8 @@ class userDocumentAdapter(val mainActivity: MainActivity) : RecyclerView.Adapter
         holder.itemView.setOnClickListener {
 
             var writingFragment = WritingFragment(1).apply {
-                Document = this@userDocumentAdapter.Documents[position] }
+                Document = this@userDocumentAdapter.Documents[position]
+            dateAdapter =this@userDocumentAdapter.dateAdapter}
             val imm: InputMethodManager = mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow( mainActivity.currentFocus?.windowToken, 0)
 

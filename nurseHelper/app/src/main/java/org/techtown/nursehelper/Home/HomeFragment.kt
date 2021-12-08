@@ -69,7 +69,6 @@ class HomeFragment : Fragment() {
                 //데이터 있음
                 else->{
                     todayAdapter.Users =rt
-
                 }
             }
 

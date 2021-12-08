@@ -34,6 +34,8 @@ class WritingFragment(val cmd:Int) : Fragment() {
     lateinit var binding :FragmentWritingBinding
     lateinit var Document: userDocument
     lateinit var userSchedule: userSchedule
+    //UserDocumentAdapter에서 전달
+    lateinit var dateAdapter: ()->Unit
     val dateFormat = SimpleDateFormat("yyyyMMdd")
     val today = Calendar.getInstance()
     var wfHeight = -1
@@ -46,14 +48,11 @@ class WritingFragment(val cmd:Int) : Fragment() {
         if(context is MainActivity) mainActivity = context
     }
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         binding = FragmentWritingBinding.inflate(layoutInflater)
-
 
         //문서 관리 탭에서 호출
         if(cmd == 1){
@@ -184,7 +183,9 @@ class WritingFragment(val cmd:Int) : Fragment() {
                 }.await()
                 when (rt) {
                     //업데이트 정상
-                    1 -> Log.d("tst", "업데이트 정상")
+                    1 -> {Log.d("tst", "업데이트 정상")
+                    dateAdapter.invoke()
+                    }
                     else ->  Log.d("tst", "doc update Error")
 
                 }

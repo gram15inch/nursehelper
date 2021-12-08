@@ -6,7 +6,7 @@ import org.techtown.nursehelper.userDocument
 class userDocumentDiff(private val old: List<userDocument>, private val new: List<userDocument>) : DiffUtil.Callback()  {
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         //Log.d("diff","content")
-        return  old[oldItemPosition] == new[newItemPosition]
+        return  old[oldItemPosition].memo == new[newItemPosition].memo
     }
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
