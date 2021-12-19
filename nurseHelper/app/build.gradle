@@ -65,4 +65,7 @@ dependencies {
 
     //schedule
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+
+    //common
+    implementation "androidx.fragment:fragment-ktx:1.3.0"
 }

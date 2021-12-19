@@ -6,90 +6,176 @@
     android:layout_height="match_parent"
     tools:context=".Schedule.day_item_fragment.DayItemDetailFragment">
 
-    <ImageView
-        android:id="@+id/mainColorView"
-        android:layout_width="20dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="56dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_img"
-        tools:srcCompat="@color/purple_500" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/colorRecycle"
-        android:layout_width="280dp"
-        android:layout_height="52dp"
-        android:layout_marginStart="80dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/mainColorView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/mainColorView" />
-
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/prevBtn"
-        android:layout_width="30dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/back"
-        android:backgroundTint="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/textNameDetail"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginEnd="50dp"
-        android:background="@android:color/transparent"
-        android:hint="input"
-        android:imeOptions="actionDone"
-        android:inputType="textNoSuggestions"
-        android:minWidth="48dp"
-
-        android:minHeight="48dp"
-        android:paddingLeft="10dp"
-        android:singleLine="true"
-        android:text="이름"
-        android:textColorHint="@android:color/darker_gray"
-        android:textCursorDrawable="@drawable/text_cursor"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/name_img"
+    <LinearLayout
+        android:id="@+id/top_nav"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/name_img" />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/prevBtn"
+            android:layout_width="30dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="16dp"
+            android:background="@drawable/back"
+            android:backgroundTint="@color/black" />
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/textAddDetail"
+    <LinearLayout
+        android:id="@+id/name_lin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="50dp"
-        android:background="@android:color/transparent"
-        android:hint="input"
-        android:inputType="textNoSuggestions|textMultiLine"
-
-
-        android:maxLines="3"
-        android:minWidth="48dp"
-        android:minHeight="48dp"
-        android:paddingLeft="10dp"
-        android:text="주소"
-
-        android:textCursorDrawable="@drawable/text_cursor"
-        android:textSize="18sp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="30dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textStart" />
+        app:layout_constraintTop_toBottomOf="@+id/top_nav">
+
+        <ImageView
+            android:id="@+id/name_img"
+            android:layout_width="30dp"
+            android:layout_height="45dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/idcard" />
+
+        <TextView
+            android:id="@+id/textNameDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:hint="이름"
+            android:maxLength="10"
+            android:singleLine="true"
+            android:textSize="24dp" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/searchPaitentBtn"
+            android:layout_width="30dp"
+            android:layout_height="29dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/search"
+            android:backgroundTint="@color/black" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/date_lin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="30dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_lin">
+
+        <ImageView
+            android:id="@+id/date_img"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginRight="22dp"
+            android:src="@drawable/clock1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textStart"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginBottom="15dp"
+                android:gravity="center_vertical"
+                android:hint="시작"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textEnd"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:gravity="center_vertical"
+                android:hint="종료"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/addr_lin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="30dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date_lin">
+
+        <ImageView
+            android:id="@+id/add_img"
+            android:layout_width="30dp"
+            android:layout_height="43dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/placeholder" />
+
+        <TextView
+            android:id="@+id/textAddDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+
+
+            android:gravity="center_vertical"
+            android:hint="주소"
+            android:maxLines="3"
+
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:textCursorDrawable="@drawable/text_cursor"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/color_lin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="30dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addr_lin">
+
+        <ImageView
+            android:id="@+id/mainColorView"
+            android:layout_width="20dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="30dp"
+            tools:srcCompat="@color/purple_500" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/colorRecycle"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:visibility="invisible" />
+
+    </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/addrSaveBtn"
@@ -101,70 +187,5 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textStart"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginEnd="50dp"
-        android:text="날짜"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/date_img"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/date_img" />
-
-    <TextView
-        android:id="@+id/textEnd"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="50dp"
-        android:text="날짜"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textStart" />
-
-    <ImageView
-        android:id="@+id/name_img"
-        android:layout_width="31dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="19dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="10dp"
-        android:src="@drawable/idcard"
-        app:layout_constraintEnd_toStartOf="@+id/textNameDetail"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prevBtn" />
-
-    <ImageView
-        android:id="@+id/date_img"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="68dp"
-        android:layout_marginEnd="13dp"
-        android:src="@drawable/clock1"
-        app:layout_constraintEnd_toStartOf="@+id/textStart"
-        app:layout_constraintHorizontal_bias="0.73"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_img" />
-
-    <ImageView
-        android:id="@+id/add_img"
-        android:layout_width="31dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="68dp"
-        android:layout_marginEnd="15dp"
-        android:src="@drawable/placeholder"
-        app:layout_constraintEnd_toStartOf="@+id/textAddDetail"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date_img" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

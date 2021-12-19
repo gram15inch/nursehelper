@@ -2,21 +2,26 @@ package org.techtown.nursehelper.Schedule.day_item_fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.setFragmentResultListener
 import org.techtown.nursehelper.MainActivity
 import org.techtown.nursehelper.R
+import org.techtown.nursehelper.Schedule.searchPatientFragment
+import org.techtown.nursehelper.Schedule.userPatient
 import org.techtown.nursehelper.databinding.FragmentDayItemDetailBinding
 import org.techtown.nursehelper.userSchedule
 import java.util.*
 
 
-class DayItemDetailFragment(var user : userSchedule) : Fragment() {
+class DayItemDetailFragment(var user : userSchedule? =null) : Fragment() {
     val binding by lazy{FragmentDayItemDetailBinding.inflate(layoutInflater)}
     lateinit var mainActivity : MainActivity
+    var pUser :userPatient? = null
     var parseCal : Calendar
     init{
         parseCal = Calendar.getInstance()
@@ -31,13 +36,43 @@ class DayItemDetailFragment(var user : userSchedule) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
+
+        //환자 이름검색
+        binding.searchPaitentBtn.setOnClickListener {
+
+            var searchPatientFragment = searchPatientFragment()
+
+            //검색결과를 다시가져오는함수 주입
+            searchPatientFragment.patientUpdate = this.patientUpdate
+            mainActivity.supportFragmentManager.beginTransaction().run{
+                replace(R.id.popUpContainer,searchPatientFragment)
+                addToBackStack("search_patient")
+                commit()
+            }
+
+        }
+
+        //일정 초기화
         binding.run {
-            textNameDetail.setText(user.name)
-            textAddDetail.setText(user.addr)
-            parseCal.time = user.startTime
-            textStart.setText("${parseCal.get(Calendar.MONTH)+1}-${parseCal.get(Calendar.DAY_OF_MONTH)} ${parseCal.get(Calendar.HOUR)}:${parseCal.get(Calendar.MINUTE)}")
-            parseCal.time = user.endTime
-            textEnd.setText("${parseCal.get(Calendar.MONTH)+1}-${parseCal.get(Calendar.DAY_OF_MONTH)} ${parseCal.get(Calendar.HOUR)}:${parseCal.get(Calendar.MINUTE)}")
+            //넘겨받은 환자가 있을경우
+            if(user!=null){
+                textNameDetail.text = user?.name
+                textAddDetail.setText(user?.addr?:"21")
+                parseCal.time = user?.startTime
+                textStart.setText("${parseCal.get(Calendar.MONTH)+1}-${parseCal.get(Calendar.DAY_OF_MONTH)} ${parseCal.get(Calendar.HOUR)}:${parseCal.get(Calendar.MINUTE)}")
+                parseCal.time = user?.endTime
+                textEnd.setText("${parseCal.get(Calendar.MONTH)+1}-${parseCal.get(Calendar.DAY_OF_MONTH)} ${parseCal.get(Calendar.HOUR)}:${parseCal.get(Calendar.MINUTE)}")
+            }//없을경우
+            else {
+
+                textNameDetail.text = ""
+                textAddDetail.setText("")
+                textStart.setText("")
+                textEnd.setText("")
+            }
+
+
+
 
             /*val layout = mainActivity.binding
             val params = layout.layoutParams as ViewGroup.MarginLayoutParams
@@ -63,7 +98,23 @@ class DayItemDetailFragment(var user : userSchedule) : Fragment() {
 
         if(this.arguments?.getString("date")!=null)
             binding.textStart.text = this.arguments?.getString("date").toString()
+
+        //넘겨받은 값이 있으면 이름,주소 생성
+        if(pUser?.name?:null !=null){
+            binding.textNameDetail.text = pUser?.name
+            binding.textAddDetail.text = pUser?.addr
+        }
+
+
     }
+
+    //
+    val patientUpdate  = object : (userPatient)->Unit{
+        override fun invoke(up:userPatient) {
+            this@DayItemDetailFragment.pUser = up
+        }
+    }
+
 /*
 
     fun  colorAdapterInit(recyclerView: RecyclerView){

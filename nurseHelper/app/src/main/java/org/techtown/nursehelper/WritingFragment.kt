@@ -154,7 +154,7 @@ class WritingFragment(val cmd:Int) : Fragment() {
         }
 
         //클릭시 wirting프레그먼트로 이동
-        binding.prevBtn2.setOnClickListener {
+        binding.prevBtn2.setOnClickListener{
             mainActivity.supportFragmentManager.popBackStack("write", 1)
             mainActivity.binding.SubFrame.visibility = View.GONE
         }

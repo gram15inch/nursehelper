@@ -9,6 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import org.techtown.nursehelper.CalViewItem
 import org.techtown.nursehelper.MainActivity
+import org.techtown.nursehelper.R
+import org.techtown.nursehelper.Schedule.day_item_fragment.DayItemDetailFragment
+import org.techtown.nursehelper.Schedule.searchPatientFragment
 import org.techtown.nursehelper.calendarviewpager.CalendarPagerAdapter
 import org.techtown.nursehelper.databinding.FragmentScheduleBinding
 import java.util.*
@@ -53,10 +56,21 @@ class ScheduleFragment : Fragment() {
 
          }*/
 
-        binding.popUpContainer.setOnTouchListener { v, event ->
-            true
+
+
+
+        //일정 추가 버튼
+        binding.addScheBtn.setOnClickListener {
+            var dayItemDetailFragment = DayItemDetailFragment()
+            mainActivity.supportFragmentManager.beginTransaction().run{
+                replace(R.id.popUpContainer,dayItemDetailFragment)
+                addToBackStack("day_item_detail")
+                commit()
+            }
+            popUpShow(1)
         }
 
+        //바탕 클릭시 처음으로
         binding.greyBg.setOnClickListener{
             binding.popUpContainer.visibility = View.INVISIBLE
             binding.greyBg.visibility = View.INVISIBLE
@@ -73,7 +87,10 @@ class ScheduleFragment : Fragment() {
             true
         }
 
-
+        //클릭오류 방지
+        binding.popUpContainer.setOnTouchListener { v, event ->
+            true
+        }
         return binding.root
     }
     fun onBindView(calViewItem: CalViewItem){
