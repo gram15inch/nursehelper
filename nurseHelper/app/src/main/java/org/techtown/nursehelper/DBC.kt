@@ -6,6 +6,7 @@ import androidx.core.graphics.toColorInt
 import org.json.JSONArray
 import org.json.JSONObject
 import org.jsoup.Jsoup
+import org.techtown.nursehelper.Schedule.userPatient
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -13,6 +14,7 @@ import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
 import java.text.SimpleDateFormat
+import java.util.*
 
 class DBC(val mainActivity: MainActivity) {
     val from = "2013-04-08 10:10:10"
@@ -126,6 +128,7 @@ class DBC(val mainActivity: MainActivity) {
         return body
     }
 
+    //일정
     fun getSchedule(id:String, date:String):List<userSchedule>{
         var users = mutableListOf<userSchedule>()
         var Html =""
@@ -252,6 +255,7 @@ class DBC(val mainActivity: MainActivity) {
         return 1
     }
 
+    //문서
     fun getDocument(id:String,pcode:String,name:String,addr:String,date:String):List<userDocument>{
         var users = mutableListOf<userDocument>()
         var Html =""
@@ -324,7 +328,6 @@ class DBC(val mainActivity: MainActivity) {
             return users
         }
     }
-
     fun inUpdateDocument(id:String,type:String,pcode: String,date: String,memo:String):Int{
         var users = mutableListOf<userDocument>()
         var Html =""
@@ -368,6 +371,76 @@ class DBC(val mainActivity: MainActivity) {
         }
     }
 
+    //환자
+    fun getPatient(id:String,name:String):List<userPatient>{
+
+        var users = mutableListOf<userPatient>()
+        var Html =""
+        // jsp에 http연결
+        var urlStr =rootPath+"searchPatient.jsp"
+        var url = URL(urlStr)
+        val httpClient = url.openConnection() as HttpURLConnection
+        //setCookieHeader(httpClient)
+        httpClient.setRequestMethod("POST") // URL 요청에 대한 메소드 설정 : POST.
+        httpClient.setRequestProperty("Accept-Charset", "UTF-8") // Accept-Charset 설정.
+        httpClient.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;charset=UTF-8")
+        var para = "qry=ss&id=$id&name=$name"
+        var os = OutputStreamWriter(httpClient.outputStream)
+        os.write(para)
+        os.flush()
+
+        //jsp 에서 html 받기
+        if (httpClient.responseCode == HttpURLConnection.HTTP_OK) {
+            Log.d("tst","http ok")
+            try {
+                Html = readStream(httpClient.inputStream)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                httpClient.disconnect()
+            }
+        } else {
+            Log.d("tst","ERROR ${httpClient.responseCode}")
+            println("ERROR ${httpClient.responseCode}")
+        }
+        //getCookieHeader(httpClient)
+        //html 에서 body 추출
+        val body = Jsoup.parse(Html).text()
+        if(body =="error"){
+            Log.d("tst","patient error")
+            var user =userPatient(
+                123,
+                "name",
+                "m",
+                Calendar.getInstance().time,
+                "addr1"
+            )
+
+            return users
+        }else {
+            //json 에서 user 객체로 파싱
+            val json = JSONObject(body)
+            val jom = json.getString("main")
+            val jarray = JSONArray(jom)
+            for (i in 0..(jarray.length() - 1)) {
+                val jo = jarray.getJSONObject(i)
+                Log.d("tst","user[$i] :${jo}")
+                var user =userPatient(
+                    jo.getString("pcode").toInt(),
+                    jo.getString("name"),
+                    jo.getString("sex"),
+                    domFormat.parse(jo.getString("dom")),
+                    jo.getString("addr")
+                )
+                users.add(user)
+            }
+
+            return users
+        }
+    }
+
+
+    //사용자 계정
     fun login(id:String, pw:String):Int {
         var Html =""
 
@@ -417,7 +490,6 @@ class DBC(val mainActivity: MainActivity) {
 
 
     }
-
     fun regist(id:String, pw:String, name:String, sex: String, pn:String):Int{
         //1성공 0실패 -2 db오류
 
@@ -467,7 +539,6 @@ class DBC(val mainActivity: MainActivity) {
         }
 
     }
-
     fun idCheck(id:String):Int{
         var Html =""
 
@@ -521,7 +592,6 @@ class DBC(val mainActivity: MainActivity) {
         bufferedReader.forEachLine { stringBuilder.append(it) }
         return stringBuilder.toString()
     }
-
     fun setCookieHeader(con:HttpURLConnection){
         var pref = mainActivity.getSharedPreferences("sessionCookie", Context.MODE_PRIVATE);
         var sessionid = pref.getString("sessionid",null)

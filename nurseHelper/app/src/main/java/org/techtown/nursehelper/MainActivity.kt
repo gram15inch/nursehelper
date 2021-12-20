@@ -243,7 +243,7 @@ class MainActivity : AppCompatActivity() {
         return dbc.getDocument(id,pno,name,addr,date)
     }
 
-    fun getUserInfo():Int{
+   /* fun getUserInfo():Int{
         val sp1: SharedPreferences =  this.getSharedPreferences("userInfo", Context.MODE_PRIVATE)
         var id = sp1.getString("id", null)
         if(id==null)
@@ -253,7 +253,7 @@ class MainActivity : AppCompatActivity() {
             return 1
         }
 
-    }
+    }*/
 
     fun updateDBdata(id:String,date:String){
 
@@ -274,6 +274,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun getUserInfo():String{
+        val sp1: SharedPreferences =  getSharedPreferences("userInfo", Context.MODE_PRIVATE)
+        var id = sp1.getString("id", null)
+        if(id==null)
+            return ""
+        else
+            return id
+    }
 
     //Login 객체함수
     val login  = object : (String,String)->Int{

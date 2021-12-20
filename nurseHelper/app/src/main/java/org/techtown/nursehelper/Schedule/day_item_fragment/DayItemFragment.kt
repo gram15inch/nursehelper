@@ -116,7 +116,7 @@ class DayItemFragment(var day: Day) : Fragment() {
                     //아이템뷰 삭제
                     delBtn.setOnClickListener {
                         //id가져오기
-                        val id = getUserInfo()
+                        val id = mainActivity.getUserInfo()
                         if(id != "") {
 
                             CoroutineScope(Dispatchers.Main).launch {
@@ -169,13 +169,6 @@ class DayItemFragment(var day: Day) : Fragment() {
         binding.binding.swipeView.setBackground(shape)
     }
 
-    fun getUserInfo():String{
-        val sp1: SharedPreferences =  mainActivity.getSharedPreferences("userInfo", Context.MODE_PRIVATE)
-        var id = sp1.getString("id", null)
-        if(id==null)
-            return ""
-        else
-            return id
-    }
+
 
 }

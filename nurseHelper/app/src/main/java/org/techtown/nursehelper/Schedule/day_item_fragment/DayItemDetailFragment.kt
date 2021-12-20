@@ -1,5 +1,6 @@
 package org.techtown.nursehelper.Schedule.day_item_fragment
 
+import android.R.attr
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -7,7 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginTop
+import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.setFragmentResultListener
 import org.techtown.nursehelper.MainActivity
 import org.techtown.nursehelper.R
@@ -16,6 +20,10 @@ import org.techtown.nursehelper.Schedule.userPatient
 import org.techtown.nursehelper.databinding.FragmentDayItemDetailBinding
 import org.techtown.nursehelper.userSchedule
 import java.util.*
+import android.R.attr.button
+
+
+
 
 
 class DayItemDetailFragment(var user : userSchedule? =null) : Fragment() {
@@ -81,6 +89,31 @@ class DayItemDetailFragment(var user : userSchedule? =null) : Fragment() {
             mainActivity.binding.detailContainer.visibility = View.VISIBLE*/
         }
 
+
+        //여기부터 12/20
+        //날짜 클릭시 달력에서 날짜가져오기 구현
+        binding.textStart.setOnClickListener {
+            if(binding.nameLin.visibility != View.GONE)
+                binding.nameLin.visibility = View.GONE
+            else
+                binding.nameLin.visibility = View.VISIBLE
+
+            if(binding.datePicker.visibility != View.VISIBLE) {
+                binding.datePicker.visibility = View.VISIBLE
+            }
+            else{
+                binding.datePicker.visibility = View.GONE
+
+            }
+
+        }
+
+        binding.datePicker.setOnDateChangedListener { view, year, monthOfYear, dayOfMonth ->
+            Log.d("tstPick","$year-$monthOfYear-$dayOfMonth")
+        }
+
+
+
         return binding.root
     }
 
@@ -88,6 +121,8 @@ class DayItemDetailFragment(var user : userSchedule? =null) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         listenerInit()
+
+
       /*
         setMainColor(Color.RED)
         colorAdapterInit(binding.colorRecycle)*/

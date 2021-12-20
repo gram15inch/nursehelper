@@ -1,7 +1,9 @@
 package org.techtown.nursehelper.Schedule
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import org.techtown.nursehelper.MainActivity
@@ -10,11 +12,12 @@ import org.techtown.nursehelper.Schedule.day_item_fragment.DayItemDetailFragment
 import org.techtown.nursehelper.databinding.UserItemPBinding
 import java.text.SimpleDateFormat
 import kotlin.properties.Delegates
-
 class patientAdapter(var mainActivity: MainActivity): RecyclerView.Adapter<patientAdapter.patientHolder>(){
 
     //searchPatientFragment에서 초기화
     lateinit var patientUpdate : (userPatient)->Unit
+    lateinit var keyFocusClear : ()->Unit
+
     var Users: List<userPatient> by Delegates.observable(emptyList()) { _, old, new ->
         userPatientDiff(old, new).calculateDiff().dispatchUpdatesTo(this)
     }
@@ -45,8 +48,12 @@ class patientAdapter(var mainActivity: MainActivity): RecyclerView.Adapter<patie
                 textBirth.text = birthFormat.format(user.birth)
             }
         this.itemView.setOnClickListener {
+            //부모 프래그먼트
+            //키보드내리기,포커스 해제
+            keyFocusClear.invoke()
             mainActivity.supportFragmentManager.popBackStack("search_patient", 1)
            patientUpdate.invoke(user)
+
 
         }
         }
