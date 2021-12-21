@@ -22,6 +22,7 @@ class DBC(val mainActivity: MainActivity) {
     companion object {
         val dateFormat = SimpleDateFormat("yyyyMMddHHmm")
         val domFormat = SimpleDateFormat("yyyyMMdd")
+        val timeFormat = SimpleDateFormat("hhmmss")
     }
 
 

@@ -21,16 +21,25 @@ import org.techtown.nursehelper.databinding.FragmentDayItemDetailBinding
 import org.techtown.nursehelper.userSchedule
 import java.util.*
 import android.R.attr.button
+import android.text.format.DateFormat.is24HourFormat
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
+import org.techtown.nursehelper.DBC
+import java.text.SimpleDateFormat
 
 
-
-
-
-class DayItemDetailFragment(var user : userSchedule? =null) : Fragment() {
+class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
     val binding by lazy{FragmentDayItemDetailBinding.inflate(layoutInflater)}
     lateinit var mainActivity : MainActivity
     var pUser :userPatient? = null
     var parseCal : Calendar
+    val timeF = SimpleDateFormat("hh:mm a")
+    val dateF = SimpleDateFormat("yyyy/MM/dd")
+    val st =Calendar.getInstance()
+    val et =Calendar.getInstance()
+    var isDate =0
+    var isName =0
     init{
         parseCal = Calendar.getInstance()
     }
@@ -58,59 +67,128 @@ class DayItemDetailFragment(var user : userSchedule? =null) : Fragment() {
                 commit()
             }
 
+
         }
 
         //일정 초기화
         binding.run {
-            //넘겨받은 환자가 있을경우
-            if(user!=null){
-                textNameDetail.text = user?.name
-                textAddDetail.setText(user?.addr?:"21")
-                parseCal.time = user?.startTime
-                textStart.setText("${parseCal.get(Calendar.MONTH)+1}-${parseCal.get(Calendar.DAY_OF_MONTH)} ${parseCal.get(Calendar.HOUR)}:${parseCal.get(Calendar.MINUTE)}")
-                parseCal.time = user?.endTime
-                textEnd.setText("${parseCal.get(Calendar.MONTH)+1}-${parseCal.get(Calendar.DAY_OF_MONTH)} ${parseCal.get(Calendar.HOUR)}:${parseCal.get(Calendar.MINUTE)}")
-            }//없을경우
-            else {
+            //넘겨받은 일정이 있을경우
+            if(sUser!=null){
+                //화면 텍스트 초기화
+                textNameDetail.text = sUser?.name
+                textAddDetail.setText(sUser?.addr?:"21")
+                textStartDate.setText(dateF.format(sUser?.startTime))
+                textStartTime.setText(timeF.format(sUser?.startTime))
+                textEndDate.setText(dateF.format(sUser?.endTime))
+                textEndTime.setText(timeF.format(sUser?.endTime))
 
+                //프래그먼트 변수 초기화
+                st.time = sUser?.startTime
+                et.time = sUser?.endTime
+                isName =1
+                isDate =1
+
+            }//넘겨받은 환자가 있을경우
+            else if(pUser!= null){
+                isName =1
+
+                
+            }else{
                 textNameDetail.text = ""
                 textAddDetail.setText("")
-                textStart.setText("")
-                textEnd.setText("")
+                textStartDate.setText("")
+                textEndDate.setText("")
+                isName=0
+                isDate=0
             }
 
 
-
-
-            /*val layout = mainActivity.binding
-            val params = layout.layoutParams as ViewGroup.MarginLayoutParams
-            params.setMargins(20, 10, 20, 10)
-            layout.layoutParams = params
-            mainActivity.binding.detailContainer.visibility = View.VISIBLE*/
         }
 
 
-        //여기부터 12/20
-        //날짜 클릭시 달력에서 날짜가져오기 구현
-        binding.textStart.setOnClickListener {
-            if(binding.nameLin.visibility != View.GONE)
-                binding.nameLin.visibility = View.GONE
-            else
-                binding.nameLin.visibility = View.VISIBLE
+        //데이트 피커 초기화
+        val datePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select date")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build()
+        datePicker.addOnPositiveButtonClickListener {
+            //피커에서 가져온 날짜
+            val calP =Calendar.getInstance()
+            calP.time = Date(it)
 
-            if(binding.datePicker.visibility != View.VISIBLE) {
-                binding.datePicker.visibility = View.VISIBLE
+            //프래그먼트에서 가져온 날짜
+            val calSt =Calendar.getInstance()
+            calSt.time = st.time
+            calSt.set(Calendar.YEAR,calP.get(Calendar.YEAR))
+            calSt.set(Calendar.MONTH,calP.get(Calendar.MONTH))
+            calSt.set(Calendar.DAY_OF_MONTH,calP.get(Calendar.DAY_OF_MONTH))
+
+
+            //시작, 끝 날짜 구분
+            when(datePicker.tag){
+                "startDate"-> binding.textStartDate.text =dateF.format(calSt.time)
+                "endDate"-> binding.textEndDate.text =dateF.format(calSt.time)
             }
-            else{
-                binding.datePicker.visibility = View.GONE
+        }
 
+        //타임피커 초기화
+        val timePicker =
+            MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_12H)
+                .setHour(0)
+                .setMinute(0)
+                .setTitleText("Select Appointment time")
+                .build()
+
+        timePicker.addOnPositiveButtonClickListener {
+
+
+            val cal =Calendar.getInstance()
+            cal.time = st.time
+            cal.set(Calendar.HOUR,timePicker.hour)
+            cal.set(Calendar.MINUTE,timePicker.minute)
+
+            //시작, 끝 시간 구분
+            when(timePicker.tag){
+                "startTime"->  {
+                    binding.textStartTime.text =timeF.format(cal.time)
+
+                    //끝날짜,시간 자동생성 :: 0 날짜, +1 시간
+                    cal.add(Calendar.HOUR,1)
+                    if(binding.textEndDate.text =="")
+                        binding.textEndDate.text = dateF.format(cal.time)
+                    if(binding.textEndTime.text ==""){
+                        cal.add(Calendar.HOUR,1)
+                        binding.textEndTime.text = timeF.format(cal.time)
+                    }
+                }
+
+                "endTime"-> {
+                    binding.textEndTime.text = timeF.format(cal.time)
+                    //여기부터 12/21:: 날짜 설정후 타당성 검증 필요
+                    //오전오후 바뀜 확인 !!
+                    //checkDateValid()
+
+                }
             }
-
         }
 
-        binding.datePicker.setOnDateChangedListener { view, year, monthOfYear, dayOfMonth ->
-            Log.d("tstPick","$year-$monthOfYear-$dayOfMonth")
+
+        //날짜,시간 클릭시 다이얼에서 가져오기
+        binding.textStartDate.setOnClickListener {
+            datePicker.show(mainActivity.supportFragmentManager,"startDate")
         }
+        binding.textStartTime.setOnClickListener {
+            timePicker.show(mainActivity.supportFragmentManager,"startTime")
+        }
+        binding.textEndDate.setOnClickListener {
+            datePicker.show(mainActivity.supportFragmentManager,"endDate")
+        }
+        binding.textEndTime.setOnClickListener {
+            timePicker.show(mainActivity.supportFragmentManager,"endTime")
+        }
+
 
 
 
@@ -132,7 +210,7 @@ class DayItemDetailFragment(var user : userSchedule? =null) : Fragment() {
         super.onStart()
 
         if(this.arguments?.getString("date")!=null)
-            binding.textStart.text = this.arguments?.getString("date").toString()
+            binding.textStartDate.text = this.arguments?.getString("date").toString()
 
         //넘겨받은 값이 있으면 이름,주소 생성
         if(pUser?.name?:null !=null){
@@ -143,49 +221,31 @@ class DayItemDetailFragment(var user : userSchedule? =null) : Fragment() {
 
     }
 
-    //
+    fun showSaveBtn(cmd :Int){
+        when(cmd){
+            1-> binding.saveBtn.visibility = View.VISIBLE
+            0-> binding.saveBtn.visibility = View.GONE
+        }
+    }
+
+    fun checkDateValid(s:Date,e:Date):Int{
+        val sc= Calendar.getInstance()
+        sc.time =s
+        val ec = Calendar.getInstance()
+        ec.time =e
+        if(sc.compareTo(ec)>=0)
+            Log.d("tst","sc")
+        else
+            Log.d("tst","ec")
+        return 1
+    }
+    // SearchPatientFragment에서 사용
     val patientUpdate  = object : (userPatient)->Unit{
         override fun invoke(up:userPatient) {
             this@DayItemDetailFragment.pUser = up
         }
     }
 
-/*
-
-    fun  colorAdapterInit(recyclerView: RecyclerView){
-
-        var colorA = colorAdapter()
-        if(colorA is colorAdapter) {
-            colorA.colorList = loadColorData()
-            colorA.mainActivity = mainActivity
-            colorA.colorFragment = this
-
-            recyclerView.run {
-                adapter = colorA
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            }
-        }
-
-    }
-    fun loadColorData():MutableList<Int>{
-        var colorList = mutableListOf<Int>()
-
-        colorList.add(Color.RED)
-        colorList.add(Color.BLUE)
-        colorList.add(Color.CYAN)
-        colorList.add(Color.GREEN)
-        colorList.add(Color.YELLOW)
-        colorList.add(Color.MAGENTA)
-
-        return colorList
-    }
-*/
-
-    fun setMainColor(color: Int) {
-        var shape = ContextCompat.getDrawable(mainActivity, R.drawable.color_bg)
-        shape?.setTint(color)
-        binding.mainColorView.setBackground(shape)
-    }
 
     fun listenerInit(){
 
@@ -194,69 +254,7 @@ class DayItemDetailFragment(var user : userSchedule? =null) : Fragment() {
                 mainActivity.supportFragmentManager.popBackStack("day_item_detail", 1)
             }
 
-            /*textNameDetail.run{
-                setOnEditorActionListener { v, actionId, event ->
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        Toast.makeText(mainActivity, v.text, Toast.LENGTH_SHORT).show()
-                        v.clearFocus()
-                    }
-                    false
-                }
-            }
-
-            textDateDetail.run {
-                setOnClickListener {
-                    //두개동시에
-                    val frag = dataTimePicker()
-                    mainActivity.supportFragmentManager.beginTransaction().run {
-                        replace(R.id.detailContainer, frag)
-                        addToBackStack("picker")
-                        commit()
-                    }
-                }
-            }
-
-            textAddDetail.run {
-
-                addrSaveBtn.setOnClickListener {
-                    mainActivity.hideSoftKeyboard()
-                    Handler().postDelayed({
-                        textAddDetail.clearFocus()
-                    }, 80)
-                }
-
-                setOnFocusChangeListener { v, hasFocus ->
-                    if (hasFocus) {
-                            textNameDetail.visibility = View.GONE
-                            textDateDetail.visibility = View.GONE
-                            colorRecycle.visibility = View.GONE
-                            nameImg.visibility = View.GONE
-                            dateImg.visibility = View.GONE
-                            mainColorView.visibility = View.GONE
-
-                            addrSaveBtn.visibility = View.VISIBLE
-                        Log.d("tst1", "focus")
-                    } else if (!hasFocus) {
-
-                            textNameDetail.visibility = View.VISIBLE
-                            textDateDetail.visibility = View.VISIBLE
-                            colorRecycle.visibility = View.GONE
-                            nameImg.visibility = View.VISIBLE
-                            dateImg.visibility = View.VISIBLE
-                            mainColorView.visibility = View.VISIBLE
-
-                            addrSaveBtn.visibility = View.GONE
-                        Log.d("tst1", "hide")
-                    }
-                }
-                setOnEditorActionListener { v, actionId, event ->
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        Toast.makeText(mainActivity, v.text, Toast.LENGTH_SHORT).show()
-                        v.clearFocus()
-                    }
-                    false
-                }
-            }
+            /*
 
             mainColorView.setOnClickListener {
                 if (colorRecycle.visibility == View.VISIBLE)
@@ -279,4 +277,27 @@ class DayItemDetailFragment(var user : userSchedule? =null) : Fragment() {
         }
 
     }
+
+    /*
+
+    fun loadColorData():MutableList<Int>{
+        var colorList = mutableListOf<Int>()
+
+        colorList.add(Color.RED)
+        colorList.add(Color.BLUE)
+        colorList.add(Color.CYAN)
+        colorList.add(Color.GREEN)
+        colorList.add(Color.YELLOW)
+        colorList.add(Color.MAGENTA)
+
+        return colorList
+    }
+
+
+    fun setMainColor(color: Int) {
+        var shape = ContextCompat.getDrawable(mainActivity, R.drawable.color_bg)
+        shape?.setTint(color)
+        binding.mainColorView.setBackground(shape)
+    }
+*/
 }
