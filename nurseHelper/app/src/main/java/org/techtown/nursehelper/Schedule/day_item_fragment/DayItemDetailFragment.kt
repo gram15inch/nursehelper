@@ -21,8 +21,11 @@ import org.techtown.nursehelper.databinding.FragmentDayItemDetailBinding
 import org.techtown.nursehelper.userSchedule
 import java.util.*
 import android.R.attr.button
+import android.content.DialogInterface
 import android.text.format.DateFormat.is24HourFormat
+import android.widget.TimePicker
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import org.techtown.nursehelper.DBC
@@ -91,13 +94,13 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
             }//넘겨받은 환자가 있을경우
             else if(pUser!= null){
                 isName =1
-
-                
+                textStartDate.text = dateF.format(st.time)
+                textEndDate.text = dateF.format(st.time)
             }else{
                 textNameDetail.text = ""
-                textAddDetail.setText("")
-                textStartDate.setText("")
-                textEndDate.setText("")
+                textAddDetail.text = ""
+                textStartDate.text = ""
+                textEndDate.text = ""
                 isName=0
                 isDate=0
             }
@@ -107,86 +110,43 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
 
 
         //데이트 피커 초기화
-        val datePicker =
+       /* val datePicker =
             MaterialDatePicker.Builder.datePicker()
                 .setTitleText("Select date")
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build()
-        datePicker.addOnPositiveButtonClickListener {
-            //피커에서 가져온 날짜
-            val calP =Calendar.getInstance()
-            calP.time = Date(it)
-
-            //프래그먼트에서 가져온 날짜
-            val calSt =Calendar.getInstance()
-            calSt.time = st.time
-            calSt.set(Calendar.YEAR,calP.get(Calendar.YEAR))
-            calSt.set(Calendar.MONTH,calP.get(Calendar.MONTH))
-            calSt.set(Calendar.DAY_OF_MONTH,calP.get(Calendar.DAY_OF_MONTH))
+*/
 
 
-            //시작, 끝 날짜 구분
-            when(datePicker.tag){
-                "startDate"-> binding.textStartDate.text =dateF.format(calSt.time)
-                "endDate"-> binding.textEndDate.text =dateF.format(calSt.time)
-            }
-        }
 
-        //타임피커 초기화
-        val timePicker =
-            MaterialTimePicker.Builder()
-                .setTimeFormat(TimeFormat.CLOCK_12H)
-                .setHour(0)
-                .setMinute(0)
-                .setTitleText("Select Appointment time")
-                .build()
-
-        timePicker.addOnPositiveButtonClickListener {
-
-
-            val cal =Calendar.getInstance()
-            cal.time = st.time
-            cal.set(Calendar.HOUR,timePicker.hour)
-            cal.set(Calendar.MINUTE,timePicker.minute)
-
-            //시작, 끝 시간 구분
-            when(timePicker.tag){
-                "startTime"->  {
-                    binding.textStartTime.text =timeF.format(cal.time)
-
-                    //끝날짜,시간 자동생성 :: 0 날짜, +1 시간
-                    cal.add(Calendar.HOUR,1)
-                    if(binding.textEndDate.text =="")
-                        binding.textEndDate.text = dateF.format(cal.time)
-                    if(binding.textEndTime.text ==""){
-                        cal.add(Calendar.HOUR,1)
-                        binding.textEndTime.text = timeF.format(cal.time)
-                    }
-                }
-
-                "endTime"-> {
-                    binding.textEndTime.text = timeF.format(cal.time)
-                    //여기부터 12/21:: 날짜 설정후 타당성 검증 필요
-                    //오전오후 바뀜 확인 !!
-                    //checkDateValid()
-
-                }
-            }
-        }
-
+       
 
         //날짜,시간 클릭시 다이얼에서 가져오기
         binding.textStartDate.setOnClickListener {
-            datePicker.show(mainActivity.supportFragmentManager,"startDate")
+            datePickerInit("startDate","startDate")
         }
         binding.textStartTime.setOnClickListener {
+           val timePicker= MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_12H)
+               .setHour(st.get(Calendar.HOUR))
+               .setMinute(st.get(Calendar.MINUTE))
+                .setTitleText("시작시간")
+                .build()
+            timePickerInit(timePicker)
             timePicker.show(mainActivity.supportFragmentManager,"startTime")
         }
         binding.textEndDate.setOnClickListener {
-            datePicker.show(mainActivity.supportFragmentManager,"endDate")
+            datePickerInit("endDate","endDate")
         }
         binding.textEndTime.setOnClickListener {
-            timePicker.show(mainActivity.supportFragmentManager,"endTime")
+            val tp= MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_12H)
+                .setHour(et.get(Calendar.HOUR))
+                .setMinute(et.get(Calendar.MINUTE))
+                .setTitleText("종료시간")
+                .build()
+            timePickerInit(tp)
+            tp.show(mainActivity.supportFragmentManager,"endTime")
         }
 
 
@@ -233,11 +193,12 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
         sc.time =s
         val ec = Calendar.getInstance()
         ec.time =e
-        if(sc.compareTo(ec)>=0)
-            Log.d("tst","sc")
+        var cp =sc.compareTo(ec)
+        Log.d("tst","st${DBC.dateFormat.format(st.time)} / et${DBC.dateFormat.format(et.time)}")
+        if(cp<=0)
+            return 1
         else
-            Log.d("tst","ec")
-        return 1
+            return 0
     }
     // SearchPatientFragment에서 사용
     val patientUpdate  = object : (userPatient)->Unit{
@@ -246,6 +207,101 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
         }
     }
 
+    fun datePickerInit(title: String,tag :String){
+
+        val datePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText(title)
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build()
+
+        datePicker.addOnPositiveButtonClickListener {
+            //피커에서 가져온 날짜
+            val calP =Calendar.getInstance()
+            calP.time = Date(it)
+
+            //프래그먼트에서 가져온 날짜
+            val calSt =Calendar.getInstance()
+
+
+
+            //시작, 끝 날짜 구분
+            when(datePicker.tag){
+                "startDate"-> {
+                    calSt.time = st.time
+                    calSt.set(Calendar.YEAR,calP.get(Calendar.YEAR))
+                    calSt.set(Calendar.MONTH,calP.get(Calendar.MONTH))
+                    calSt.set(Calendar.DAY_OF_MONTH,calP.get(Calendar.DAY_OF_MONTH))
+                    binding.textStartDate.text =dateF.format(calSt.time)
+                    st.time = calSt.time
+                }
+                "endDate"-> {
+                    calSt.time = et.time
+                    calSt.set(Calendar.YEAR,calP.get(Calendar.YEAR))
+                    calSt.set(Calendar.MONTH,calP.get(Calendar.MONTH))
+                    calSt.set(Calendar.DAY_OF_MONTH,calP.get(Calendar.DAY_OF_MONTH))
+                    binding.textEndDate.text =dateF.format(calSt.time)
+                    et.time = calSt.time
+                }
+            }
+            checkDateValid(st.time,et.time)
+        }
+        datePicker.show(mainActivity.supportFragmentManager,tag)
+    }
+
+    fun timePickerInit(timePicker:MaterialTimePicker){
+        //타임피커 초기화
+            MaterialTimePicker.Builder()
+                .setTimeFormat(TimeFormat.CLOCK_12H)
+                .setHour(0)
+                .setMinute(0)
+                .setTitleText("Select Appointment time")
+                .build()
+
+
+        timePicker.addOnPositiveButtonClickListener {
+
+            val cal = Calendar.getInstance()
+
+            //시작, 끝 시간 구분
+            when (timePicker.tag) {
+                "startTime" -> {
+                    cal.time = st.time
+                    cal.set(Calendar.HOUR_OF_DAY, timePicker.hour)
+                    cal.set(Calendar.MINUTE, timePicker.minute)
+                    binding.textStartTime.text = timeF.format(cal.time)
+                    st.time = cal.time
+
+
+                    //시작날짜 자동생성 :: 0 날짜
+                    if (binding.textStartDate.text == "") {
+                        binding.textStartDate.text = dateF.format(cal.time)
+                    }
+                    //끝날짜,시간 자동생성 :: 0 날짜, +1 시간
+                    cal.add(Calendar.HOUR, 1)
+                    if (binding.textEndDate.text == "") {
+                        binding.textEndDate.text = dateF.format(cal.time)
+                    }
+                    if (binding.textEndTime.text == "") {
+                        binding.textEndTime.text = timeF.format(cal.time)
+                    }
+                    et.time = cal.time
+                }
+
+                "endTime" -> {
+                    cal.time = et.time
+                    cal.set(Calendar.HOUR_OF_DAY, timePicker.hour)
+                    cal.set(Calendar.MINUTE, timePicker.minute)
+                    binding.textEndTime.text = timeF.format(cal.time)
+                    et.time = cal.time
+                    //여기부터 12/21:: 날짜 설정후 타당성 검증 필요
+                    //오전오후 바뀜 확인 !!
+                }
+            }
+            checkDateValid(st.time, et.time)
+
+        }
+    }
 
     fun listenerInit(){
 
