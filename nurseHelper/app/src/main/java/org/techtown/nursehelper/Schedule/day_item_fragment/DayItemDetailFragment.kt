@@ -21,6 +21,7 @@ import org.techtown.nursehelper.databinding.FragmentDayItemDetailBinding
 import org.techtown.nursehelper.userSchedule
 import java.util.*
 import android.R.attr.button
+import android.R.attr.password
 import android.content.DialogInterface
 import android.text.format.DateFormat.is24HourFormat
 import android.widget.TimePicker
@@ -57,24 +58,30 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
 
+        listenerInit()
+
+        //뒤로가기
+        binding.prevBtn.setOnClickListener {
+            mainActivity.supportFragmentManager.popBackStack("day_item_detail", 1)
+        }
+
+
         //환자 이름검색
         binding.searchPaitentBtn.setOnClickListener {
 
             var searchPatientFragment = searchPatientFragment()
 
             //검색결과를 다시가져오는함수 주입
-            searchPatientFragment.patientUpdate = this.patientUpdate
-            mainActivity.supportFragmentManager.beginTransaction().run{
-                replace(R.id.popUpContainer,searchPatientFragment)
+            searchPatientFragment.patientUpdate = this@DayItemDetailFragment.patientUpdate
+            mainActivity.supportFragmentManager.beginTransaction().run {
+                replace(R.id.popUpContainer, searchPatientFragment)
                 addToBackStack("search_patient")
                 commit()
             }
-
-
         }
 
-        //일정 초기화
-        binding.run {
+        //조건별 초기화
+        binding.apply {
             //넘겨받은 일정이 있을경우
             if(sUser!=null){
                 //화면 텍스트 초기화
@@ -107,19 +114,6 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
 
 
         }
-
-
-        //데이트 피커 초기화
-       /* val datePicker =
-            MaterialDatePicker.Builder.datePicker()
-                .setTitleText("Select date")
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .build()
-*/
-
-
-
-       
 
         //날짜,시간 클릭시 다이얼에서 가져오기
         binding.textStartDate.setOnClickListener {
@@ -155,16 +149,6 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        listenerInit()
-
-
-      /*
-        setMainColor(Color.RED)
-        colorAdapterInit(binding.colorRecycle)*/
-    }
 
     override fun onStart() {
         super.onStart()
@@ -180,7 +164,7 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
 
 
     }
-
+    //여기부터 ::조건체크후 세이브
     fun showSaveBtn(cmd :Int){
         when(cmd){
             1-> binding.saveBtn.visibility = View.VISIBLE
@@ -189,6 +173,21 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
     }
 
     fun checkDateValid(s:Date,e:Date):Int{
+        val tds: Boolean
+        val tde: Boolean
+        val tts: Boolean
+        val tte: Boolean
+        binding.apply {
+            tds = textStartDate.text != ""
+            tde = textEndDate.text != ""
+            tts = textStartTime.text != ""
+            tte = textEndTime.text != ""
+        }
+
+        //빈칸이 있을시
+        if(!(tds && tde && tts && tte))
+            return 2
+
         val sc= Calendar.getInstance()
         sc.time =s
         val ec = Calendar.getInstance()
@@ -197,8 +196,14 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
         Log.d("tst","st${DBC.dateFormat.format(st.time)} / et${DBC.dateFormat.format(et.time)}")
         if(cp<=0)
             return 1
-        else
+        //시작보다 종료가 앞설시
+        else{
+            et.time =st.time
+            binding.textEndDate.text = dateF.format(et.time)
+            binding.textEndTime.text = timeF.format(et.time)
             return 0
+        }
+
     }
     // SearchPatientFragment에서 사용
     val patientUpdate  = object : (userPatient)->Unit{
@@ -244,6 +249,7 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
                     et.time = calSt.time
                 }
             }
+
             checkDateValid(st.time,et.time)
         }
         datePicker.show(mainActivity.supportFragmentManager,tag)
@@ -305,10 +311,6 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
 
     fun listenerInit(){
 
-        binding.run{
-            prevBtn.setOnClickListener {
-                mainActivity.supportFragmentManager.popBackStack("day_item_detail", 1)
-            }
 
             /*
 
@@ -321,7 +323,7 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
             }
 
 */
-        }
+
 
 
         binding.colorRecycle.setOnTouchListener { v, event ->
