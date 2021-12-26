@@ -9,7 +9,7 @@ data class userSchedule(val idCode :Int,
                         var endTime:Date,
                         val sex :String,
                         val birth : Date,
-                        val color :Int){
+                        var color :Int){
 
     override fun equals(other: Any?): Boolean {
         return this.idCode == (other as userSchedule).idCode

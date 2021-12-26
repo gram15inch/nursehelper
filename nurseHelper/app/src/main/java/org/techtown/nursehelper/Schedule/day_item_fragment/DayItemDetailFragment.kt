@@ -25,6 +25,8 @@ import android.R.attr.password
 import android.content.DialogInterface
 import android.text.format.DateFormat.is24HourFormat
 import android.widget.TimePicker
+import androidx.core.graphics.toColor
+import androidx.core.graphics.toColorInt
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -59,12 +61,17 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
             et.time,
             "",
             st.time,
-            R.color.a
+            -1
         )
+
+
     }
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
+        val c = ContextCompat.getColor(context, R.color.a)
+        sUserInUp.color = c
+        //Log.d("tst","hex:${"#"+Integer.toHexString(c).uppercase()}")
 
     }
 
@@ -72,7 +79,6 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
         listenerInit()
 
         //뒤로가기
@@ -100,6 +106,7 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
             //넘겨받은 일정이 있을경우
             if(sUser!=null){
                 //화면 텍스트 초기화
+                    Log.d("tst","sUser init")
                 textNameDetail.text = sUser?.name
                 textAddDetail.setText(sUser?.addr?:"21")
                 textStartDate.setText(dateF.format(sUser?.startTime))
@@ -111,12 +118,12 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
                 st.time = sUser?.startTime
                 et.time = sUser?.endTime
                 sUserInUp = sUser!!
-                Log.d("tst","${sUserInUp?.toString()}")
                 isName =1
                 isDate =1
 
             }//넘겨받은 환자가 있을경우
             else if(pUser!= null){
+                Log.d("tst","pUser init")
                 isName =1
                 textStartDate.text = dateF.format(st.time)
                 textEndDate.text = dateF.format(st.time)
@@ -162,40 +169,56 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
 
         //기존일정이면 업데이트 아니면 추가
         binding.saveBtn.setOnClickListener {
-
-            /*if(checkSaveValid()==1){
-                  val id =mainActivity.getUserInfo()
+            var id=""
+            if(checkSaveValid()==1){
+                id = mainActivity.getUserInfo()
             if(id != "") {
                 var rt =0
                 CoroutineScope(Dispatchers.Main).launch {
                     CoroutineScope(Dispatchers.Default).async {
-                        rt = mainActivity.dbc.inUpdateSchedule(
-                            id,
-                            sUserInUp.idCode.toString(),
-                            sUserInUp.name,
-                            sUserInUp.
 
-                        )
+                        //일정업데이트
+                        if(sUser!=null){
+                            rt = mainActivity.dbc.inUpdateSchedule(
+                                id,
+                                sUserInUp.idCode.toString(),
+                                "-1",
+                                DBC.dateFormat.format(sUserInUp.startTime),
+                                DBC.dateFormat.format(sUserInUp.endTime),
+                                "#"+Integer.toHexString(sUserInUp.color).uppercase()
+                            )
+                        //일정추가
+                        }else{
+                            rt = mainActivity.dbc.inUpdateSchedule(
+                                id,
+                                "-1",
+                                pUser?.pCode.toString(),
+                                DBC.dateFormat.format(sUserInUp.startTime),
+                                DBC.dateFormat.format(sUserInUp.endTime),
+                                "#"+Integer.toHexString(sUserInUp.color).uppercase()
+                            )
+                        }
+
                     }.await()
                     when(rt){
 
                         //실패시
-                        0 -> Log.d("tst","sche_get : 값 없음")
+                        0 -> Log.d("tst","sche_inUp : 저장오류")
                         //성공시
-                        else -> {
+                        1 -> {
 
+                            //캘린더 업데이트
+                            showSaveBtn(0)
                         }
-
+                        else->  Log.d("tst","sche_inUp : 예외오류")
 
                     }
                 }
 
             }else
                 Log.d("tst","sche_del : id error")
-            }
-*/
-
-            showSaveBtn(0)
+        }else
+            Log.d("tst","save_valid_error")
         }
 
 
@@ -247,17 +270,21 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
         ec.time =e
         var cp =sc.compareTo(ec)
         //Log.d("tst","st${DBC.dateFormat.format(st.time)} / et${DBC.dateFormat.format(et.time)}")
-        if(cp<=0)
-            return 1
+        if(cp<=0){
+            if(isName==1)
+                isDate=1
+            showSaveBtn(1)
+            return 1}
 
         //시작보다 종료가 앞설시
         else{
             et.time =st.time
             binding.textEndDate.text = dateF.format(et.time)
             binding.textEndTime.text = timeF.format(et.time)
+
             return 0
         }
-        showSaveBtn(1)
+
     }
 
     fun checkSaveValid():Int{
@@ -268,6 +295,8 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
                sUserInUp!!.endTime = et.time
                return 1
            }
+       }else {
+           Log.d("tst","isName: $isName isDate: $isDate")
        }
         return 0
     }

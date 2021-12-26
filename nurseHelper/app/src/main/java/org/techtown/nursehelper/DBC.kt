@@ -251,9 +251,46 @@ class DBC(val mainActivity: MainActivity) {
             else -> return 0
         }
     }
-    fun inUpdateSchedule( id :String, sno :String, name:String, sdate:String, edate:String, color:String):Int{
+    fun inUpdateSchedule( id :String, sno :String, pno:String, sdate:String, edate:String, color:String):Int{
+        var Html =""
+        // jsp에 http연결
+        var urlStr =rootPath+"inUpSchedule.jsp"
+        var url = URL(urlStr)
+        val httpClient = url.openConnection() as HttpURLConnection
 
-        return 1
+        //setCookieHeader(httpClient)
+        httpClient.setRequestMethod("POST") // URL 요청에 대한 메소드 설정 : POST.
+        httpClient.setRequestProperty("Accept-Charset", "UTF-8") // Accept-Charset 설정.
+        httpClient.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;charset=UTF-8")
+        var para = "qry=ss&id=$id&sno=$sno&pno=$pno&sdate=$sdate&edate=$edate&color=$color"
+        var os = OutputStreamWriter(httpClient.outputStream)
+        os.write(para)
+        os.flush()
+
+
+        //jsp 에서 html 받기
+        if (httpClient.responseCode == HttpURLConnection.HTTP_OK) {
+            Log.d("tst","http ok")
+            try {
+                Html = readStream(httpClient.inputStream)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                httpClient.disconnect()
+            }
+        } else {
+            Log.d("tst","ERROR ${httpClient.responseCode}")
+            println("ERROR ${httpClient.responseCode}")
+        }
+        //getCookieHeader(httpClient)
+
+        //html 에서 body 추출
+        val body = Jsoup.parse(Html).text()
+        when(body){
+            "success"-> return 1
+            "db drror"-> return -2
+            else -> return -3
+        }
     }
 
     //문서
