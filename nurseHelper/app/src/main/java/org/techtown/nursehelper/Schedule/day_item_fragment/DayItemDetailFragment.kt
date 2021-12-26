@@ -29,6 +29,10 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.techtown.nursehelper.DBC
 import java.text.SimpleDateFormat
 
@@ -37,6 +41,7 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
     val binding by lazy{FragmentDayItemDetailBinding.inflate(layoutInflater)}
     lateinit var mainActivity : MainActivity
     var pUser :userPatient? = null
+    var sUserInUp :userSchedule
     var parseCal : Calendar
     val timeF = SimpleDateFormat("hh:mm a")
     val dateF = SimpleDateFormat("yyyy/MM/dd")
@@ -46,6 +51,16 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
     var isName =0
     init{
         parseCal = Calendar.getInstance()
+        sUserInUp =userSchedule(
+            -1,
+           "",
+            "",
+            st.time,
+            et.time,
+            "",
+            st.time,
+            R.color.a
+        )
     }
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -95,6 +110,8 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
                 //프래그먼트 변수 초기화
                 st.time = sUser?.startTime
                 et.time = sUser?.endTime
+                sUserInUp = sUser!!
+                Log.d("tst","${sUserInUp?.toString()}")
                 isName =1
                 isDate =1
 
@@ -143,7 +160,43 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
             tp.show(mainActivity.supportFragmentManager,"endTime")
         }
 
+        //기존일정이면 업데이트 아니면 추가
+        binding.saveBtn.setOnClickListener {
 
+            /*if(checkSaveValid()==1){
+                  val id =mainActivity.getUserInfo()
+            if(id != "") {
+                var rt =0
+                CoroutineScope(Dispatchers.Main).launch {
+                    CoroutineScope(Dispatchers.Default).async {
+                        rt = mainActivity.dbc.inUpdateSchedule(
+                            id,
+                            sUserInUp.idCode.toString(),
+                            sUserInUp.name,
+                            sUserInUp.
+
+                        )
+                    }.await()
+                    when(rt){
+
+                        //실패시
+                        0 -> Log.d("tst","sche_get : 값 없음")
+                        //성공시
+                        else -> {
+
+                        }
+
+
+                    }
+                }
+
+            }else
+                Log.d("tst","sche_del : id error")
+            }
+*/
+
+            showSaveBtn(0)
+        }
 
 
         return binding.root
@@ -193,9 +246,10 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
         val ec = Calendar.getInstance()
         ec.time =e
         var cp =sc.compareTo(ec)
-        Log.d("tst","st${DBC.dateFormat.format(st.time)} / et${DBC.dateFormat.format(et.time)}")
+        //Log.d("tst","st${DBC.dateFormat.format(st.time)} / et${DBC.dateFormat.format(et.time)}")
         if(cp<=0)
             return 1
+
         //시작보다 종료가 앞설시
         else{
             et.time =st.time
@@ -203,13 +257,30 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
             binding.textEndTime.text = timeF.format(et.time)
             return 0
         }
-
+        showSaveBtn(1)
     }
+
+    fun checkSaveValid():Int{
+
+       if(isName == 1 && isDate ==1){
+           if(sUserInUp != null) {
+               sUserInUp!!.startTime = st.time
+               sUserInUp!!.endTime = et.time
+               return 1
+           }
+       }
+        return 0
+    }
+
     // SearchPatientFragment에서 사용
     val patientUpdate  = object : (userPatient)->Unit{
         override fun invoke(up:userPatient) {
             this@DayItemDetailFragment.pUser = up
+            sUserInUp.name = up.name
+            sUserInUp.addr = up.addr
+            showSaveBtn(1)
         }
+
     }
 
     fun datePickerInit(title: String,tag :String){
@@ -312,20 +383,6 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
     fun listenerInit(){
 
 
-            /*
-
-            mainColorView.setOnClickListener {
-                if (colorRecycle.visibility == View.VISIBLE)
-                    colorRecycle.visibility = View.INVISIBLE
-                else if(colorRecycle.visibility == View.INVISIBLE )
-                    colorRecycle.visibility = View.VISIBLE
-                //Log.d("tst1","${binding.mainColorView.visibility} == ${View.VISIBLE}")
-            }
-
-*/
-
-
-
         binding.colorRecycle.setOnTouchListener { v, event ->
             true
         }
@@ -333,6 +390,20 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
         this.view?.setOnClickListener {
             binding.colorRecycle.visibility = View.INVISIBLE
         }
+
+
+
+        /*
+
+        mainColorView.setOnClickListener {
+            if (colorRecycle.visibility == View.VISIBLE)
+                colorRecycle.visibility = View.INVISIBLE
+            else if(colorRecycle.visibility == View.INVISIBLE )
+                colorRecycle.visibility = View.VISIBLE
+            //Log.d("tst1","${binding.mainColorView.visibility} == ${View.VISIBLE}")
+        }
+
+*/
 
     }
 

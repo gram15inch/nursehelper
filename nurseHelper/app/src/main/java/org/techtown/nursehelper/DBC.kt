@@ -251,7 +251,7 @@ class DBC(val mainActivity: MainActivity) {
             else -> return 0
         }
     }
-    fun inUpdateSchedule( id :String, sno :String, pno:String, sdate:String, edate:String, color:String):Int{
+    fun inUpdateSchedule( id :String, sno :String, name:String, sdate:String, edate:String, color:String):Int{
 
         return 1
     }
