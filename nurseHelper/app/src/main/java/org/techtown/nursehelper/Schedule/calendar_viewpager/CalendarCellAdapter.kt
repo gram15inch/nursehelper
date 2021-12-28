@@ -33,11 +33,6 @@ abstract class CalendarCellAdapter : RecyclerView.Adapter<CalendarCellAdapter.do
         Log.d("diff","DayGridItem")
     }
 
-    //모든일정 단순리스트
-    var dblist: List<userSchedule> by Delegates.observable(emptyList()) { _, old, new ->
-        userScheduleDiff(old, new).calculateDiff().dispatchUpdatesTo(this)
-    }
-
     constructor(context: Context, date: Date, preselectedDay: Date? = null) : this(context, Calendar.getInstance().apply { time = date }, CalendarPagerAdapter.DayOfWeek.Sunday, preselectedDay)
     constructor(context: Context, calendar: Calendar, startingAt: CalendarPagerAdapter.DayOfWeek, preselectedDay: Date? = null) : super() {
         this.context = context
@@ -121,7 +116,8 @@ abstract class CalendarCellAdapter : RecyclerView.Adapter<CalendarCellAdapter.do
     inner class domHolder(var binding : DOMItemBinding):RecyclerView.ViewHolder(binding.root){
 
         fun onBindHolder(day: Day,users :List<userSchedule>) {
-            var dayUserItems = users
+
+            var dayUserItems = (context as MainActivity).sortData(users)
             binding.textDay.text = when (day.state) {
                 DayState.ThisMonth -> day.calendar.get(Calendar.DAY_OF_MONTH).toString()
                 else -> day.calendar.get(Calendar.DAY_OF_MONTH).toString()

@@ -43,12 +43,12 @@
 
 
     <TextView
-        android:id="@+id/textUserInfo"
-        android:layout_width="178dp"
+        android:id="@+id/textLogout"
+        android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="70dp"
-        android:text="id-pw"
+        android:text="로그아웃"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

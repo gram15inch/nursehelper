@@ -20,6 +20,7 @@ class ScheduleFragment : Fragment() {
     val binding by lazy{FragmentScheduleBinding.inflate(layoutInflater)}
     lateinit var mainActivity : MainActivity
     var monthItemUpdate : ((MainActivity)->Unit)? = null
+   public lateinit var dayItemDetailFragment : DayItemDetailFragment
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
@@ -61,7 +62,11 @@ class ScheduleFragment : Fragment() {
 
         //일정 추가 버튼
         binding.addScheBtn.setOnClickListener {
-            var dayItemDetailFragment = DayItemDetailFragment()
+             var dayItemDetailFragment = DayItemDetailFragment().apply{
+                    pagerAdapterReflesh = Adapter.pagerAdapterReflesh
+                    popUpShow = this@ScheduleFragment.popUpShow
+            }
+
             mainActivity.supportFragmentManager.beginTransaction().run{
                 replace(R.id.popUpContainer,dayItemDetailFragment)
                 addToBackStack("day_item_detail")
@@ -98,16 +103,18 @@ class ScheduleFragment : Fragment() {
         pCal.time = calViewItem.pryCal
         binding.ymText.text = "${pCal.get(Calendar.YEAR)}-${pCal.get(Calendar.MONTH)+1}"
     }
-    fun popUpShow(p1:Int){
 
-        if(p1==1) {
-            binding.popUpContainer.visibility = View.VISIBLE
-            binding.greyBg.visibility = View.VISIBLE
-        }else if(p1==0){
-            binding.popUpContainer.visibility = View.INVISIBLE
-            binding.greyBg.visibility = View.INVISIBLE
+    val popUpShow = object : (Int)->Unit{
+        override fun invoke(p1: Int) {
+            if(p1==1) {
+                binding.popUpContainer.visibility = View.VISIBLE
+                binding.greyBg.visibility = View.VISIBLE
+            }else if(p1==0){
+                binding.popUpContainer.visibility = View.INVISIBLE
+                binding.greyBg.visibility = View.INVISIBLE
+            }
         }
-
     }
+
 
 }

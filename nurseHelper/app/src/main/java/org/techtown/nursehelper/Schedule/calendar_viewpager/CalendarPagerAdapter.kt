@@ -16,7 +16,7 @@ import java.util.*
 
 /**
  * @param isStartAtMonday 달력 표기를 월요일 시작할지 어떨지.false로 하면 일요일이 시작됩니다. */
-open class CalendarPagerAdapter(val context: Context, var scheduleFragment: ScheduleFragment, base: Calendar = Calendar.getInstance(), val startingAt: DayOfWeek = DayOfWeek.Sunday) : PagerAdapter() {
+ open class CalendarPagerAdapter(val context: Context, var scheduleFragment: ScheduleFragment, base: Calendar = Calendar.getInstance(), val startingAt: DayOfWeek = DayOfWeek.Sunday) : PagerAdapter() {
 
     //초기 달력 설정 [pagerAdapter 캘린더(파라미터) 현재월 이하 초기화 yyyy-00-00 00:00:00]
     private val baseCalendar: Calendar = DateUtils.truncate(base, Calendar.DAY_OF_MONTH).apply {
@@ -40,7 +40,7 @@ open class CalendarPagerAdapter(val context: Context, var scheduleFragment: Sche
         }
 
     //어답터 재시작
-    var pagerAdapterReflesh : (()->Unit)? = object :()->Unit{
+    var pagerAdapterReflesh : (()->Unit) = object :()->Unit{
         override fun invoke() {
             this@CalendarPagerAdapter.notifyDataSetChanged()
             //this@CalendarPagerAdapter.notifyCalendarItemChanged()
@@ -49,20 +49,21 @@ open class CalendarPagerAdapter(val context: Context, var scheduleFragment: Sche
     }
 
     //셀 클릭 이벤트 객체
-    var onDayClickListener: ((Day) -> Unit)? = object : (Day)->Unit{
+    var onDayClickListener =  object : (Day)->Unit{
         override fun invoke(day: Day) {
             Log.d("tst","dayClick: ${day.calendar.time}")
 
             //Fragment 생성
-            val dayItemFragment = DayItemFragment(day) //데이터는 날짜만 넘김
+            val dayItemFragment = DayItemFragment(day).apply { //데이터는 날짜만 넘김
+                //Fragment 초기화
+                pagerAdapterReflesh = this@CalendarPagerAdapter.pagerAdapterReflesh
+            }
+
             (context as MainActivity).supportFragmentManager.beginTransaction().run{
                 replace(R.id.popUpContainer,dayItemFragment)
                 addToBackStack("day_item")
                 commit()
             }
-            //Fragment 초기화
-            dayItemFragment.pagerAdapterReflesh = pagerAdapterReflesh
-
             //view 보이기
             scheduleFragment.popUpShow(1)
         }
@@ -105,7 +106,7 @@ open class CalendarPagerAdapter(val context: Context, var scheduleFragment: Sche
                             this@CalendarPagerAdapter.selectedDay = day.calendar.time
 
                             //셀 클릭 이벤트 객체 실행(이곳에서 만듬)
-                            onDayClickListener?.invoke(day)
+                            onDayClickListener.invoke(day)
                             //notifyCalendarItemChanged()
 
                             //임시수정

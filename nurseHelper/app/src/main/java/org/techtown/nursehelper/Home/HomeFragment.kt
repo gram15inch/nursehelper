@@ -15,7 +15,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.techtown.nursehelper.MainActivity
 import org.techtown.nursehelper.databinding.FragmentHomeBinding
-import org.techtown.nursehelper.databinding.HomeSectionBinding
 import org.techtown.nursehelper.userSchedule
 import java.text.SimpleDateFormat
 import java.util.*
@@ -23,8 +22,6 @@ import java.util.*
 class HomeFragment : Fragment() {
     lateinit var mainActivity : MainActivity
     val binding by lazy{FragmentHomeBinding.inflate(layoutInflater)}
-    val todayBinding by lazy{HomeSectionBinding.inflate(layoutInflater)}
-    val recentBinding by lazy{HomeSectionBinding.inflate(layoutInflater)}
     val dateFormat = SimpleDateFormat("yyyyMMdd")
     val today = Calendar.getInstance()
     override fun onAttach(context: Context) {
@@ -38,14 +35,12 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         var todayAdapter = homeScheduleAdpater(mainActivity)
-        todayBinding.run{
-            textSectionTitle.text = "오늘 일정"
-            sectionRecyclerView.adapter = todayAdapter
-            sectionRecyclerView.layoutManager = LinearLayoutManager(activity)
+        binding.apply{
+            texthomeTitle.text= "오늘일정"
+            homeRecyclerView.adapter = todayAdapter
+            homeRecyclerView.layoutManager = LinearLayoutManager(activity)
         }
 
-        //프레임안에 레이아웃 넣기
-        binding.todayFrame.addView(todayBinding.root)
         CoroutineScope(Dispatchers.Main).launch {
            var rt : List<userSchedule> = listOf()
             CoroutineScope(Dispatchers.Default).async {
@@ -54,12 +49,9 @@ class HomeFragment : Fragment() {
                 if(id==null){
                     Log.d("tsthome","id = null")
                 }else {
-                    //rt = mainActivity.getDaySchedule(id, dateFormat.format(today.time))
                     rt = mainActivity.searchData(today.time)
-                    Log.d("tsthome", rt.size.toString())
                 }
             }.await()
-            Log.d("tsthome","await")
 
             when(rt.size){
                 //데이터 없음
@@ -68,14 +60,16 @@ class HomeFragment : Fragment() {
                 }
                 //데이터 있음
                 else->{
-                    todayAdapter.Users =rt
+                    todayAdapter.Users =mainActivity.sortData(rt)
                 }
             }
 
 
         }
 
-
+    fun test1(){
+        Log.d("tst","test1 on")
+    }
 
         return binding.root
     }

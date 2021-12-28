@@ -37,9 +37,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.techtown.nursehelper.DBC
 import java.text.SimpleDateFormat
+import java.util.Random
 
 
-class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
+open class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
     val binding by lazy{FragmentDayItemDetailBinding.inflate(layoutInflater)}
     lateinit var mainActivity : MainActivity
     var pUser :userPatient? = null
@@ -51,6 +52,11 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
     val et =Calendar.getInstance()
     var isDate =0
     var isName =0
+    val colors = mutableListOf<Int>()
+    //dayItemFragment or scheduleFragment에서 주입
+   lateinit var pagerAdapterReflesh : (()->Unit)
+    //ScheduleFragment에서 주입
+    var popUpShow :((Int)->Unit)? =null
     init{
         parseCal = Calendar.getInstance()
         sUserInUp =userSchedule(
@@ -69,8 +75,17 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mainActivity = context as MainActivity
-        val c = ContextCompat.getColor(context, R.color.a)
-        sUserInUp.color = c
+
+        //색 랜덤
+        colors.add(ContextCompat.getColor(context, R.color.a))
+        colors.add(ContextCompat.getColor(context, R.color.b))
+        colors.add(ContextCompat.getColor(context, R.color.c))
+        colors.add(ContextCompat.getColor(context, R.color.d))
+        val random = Random()
+        val num = random.nextInt(colors.size)
+
+        sUserInUp.color = colors[num]
+
         //Log.d("tst","hex:${"#"+Integer.toHexString(c).uppercase()}")
 
     }
@@ -85,7 +100,11 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
         binding.prevBtn.setOnClickListener {
             mainActivity.supportFragmentManager.popBackStack("day_item_detail", 1)
         }
-
+        //닫기
+        binding.cancelBtn.setOnClickListener {
+            mainActivity.supportFragmentManager.popBackStack("day_item_detail", 1)
+            popUpShow?.invoke(0)
+        }
 
         //환자 이름검색
         binding.searchPaitentBtn.setOnClickListener {
@@ -134,6 +153,8 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
                 textEndDate.text = ""
                 isName=0
                 isDate=0
+                binding.prevBtn.visibility = View.GONE
+                binding.cancelBtn.visibility = View.VISIBLE
             }
 
 
@@ -202,15 +223,29 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
                     }.await()
                     when(rt){
 
-                        //실패시
-                        0 -> Log.d("tst","sche_inUp : 저장오류")
-                        //성공시
-                        1 -> {
+                        //저장 오류
+                        -1 -> Log.d("tst","sche_inUp : 저장오류")
+                        //db오류
+                        -2 -> Log.d("tst","sche_inUp : DB오류")
+                       else->{
 
-                            //캘린더 업데이트
-                            showSaveBtn(0)
-                        }
-                        else->  Log.d("tst","sche_inUp : 예외오류")
+                           Log.d("tst","rt: $rt")
+                           sUserInUp.idCode = rt
+                           if(sUser==null)
+                                mainActivity.insertSchedule(sUserInUp)
+                           else
+                               mainActivity.updateSchedule(sUserInUp)
+                           sUser= sUserInUp
+                           //캘린더 업데이트
+                           //pagerAdapterReflesh.invoke()
+                           val thread = object : Thread(){
+                               override fun run() {
+                                   mainActivity.runOnUiThread(pagerAdapterReflesh)
+                               }
+                           }
+                           thread.start()
+                           showSaveBtn(0)
+                       }
 
                     }
                 }
@@ -240,7 +275,7 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
 
 
     }
-    //여기부터 ::조건체크후 세이브
+
     fun showSaveBtn(cmd :Int){
         when(cmd){
             1-> binding.saveBtn.visibility = View.VISIBLE
@@ -278,10 +313,12 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
 
         //시작보다 종료가 앞설시
         else{
-            et.time =st.time
+            et.time = st.time
+            binding.textStartDate.text = dateF.format(st.time)
+            binding.textStartTime.text = timeF.format(st.time)
             binding.textEndDate.text = dateF.format(et.time)
             binding.textEndTime.text = timeF.format(et.time)
-
+            Log.d("tst","valid check F: ${timeF.format(sc.time)} ${timeF.format(ec.time)}")
             return 0
         }
 
@@ -378,20 +415,22 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
                     binding.textStartTime.text = timeF.format(cal.time)
                     st.time = cal.time
 
-
                     //시작날짜 자동생성 :: 0 날짜
                     if (binding.textStartDate.text == "") {
                         binding.textStartDate.text = dateF.format(cal.time)
                     }
                     //끝날짜,시간 자동생성 :: 0 날짜, +1 시간
-                    cal.add(Calendar.HOUR, 1)
+
                     if (binding.textEndDate.text == "") {
                         binding.textEndDate.text = dateF.format(cal.time)
+                        et.time = cal.time
                     }
                     if (binding.textEndTime.text == "") {
+                        cal.add(Calendar.HOUR, 1)
                         binding.textEndTime.text = timeF.format(cal.time)
+                        et.time = cal.time
                     }
-                    et.time = cal.time
+
                 }
 
                 "endTime" -> {
@@ -400,14 +439,14 @@ class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
                     cal.set(Calendar.MINUTE, timePicker.minute)
                     binding.textEndTime.text = timeF.format(cal.time)
                     et.time = cal.time
-                    //여기부터 12/21:: 날짜 설정후 타당성 검증 필요
-                    //오전오후 바뀜 확인 !!
                 }
             }
             checkDateValid(st.time, et.time)
 
         }
     }
+
+
 
     fun listenerInit(){
 

@@ -17,9 +17,6 @@ open class CalendarViewPager(context: Context, attrs: AttributeSet? = null) : Vi
         if (adapter is CalendarPagerAdapter) {
             this.clearOnPageChangeListeners()
 
-            //어답터 초기화
-            //adapter.onDayClickListener = this.onDayClickListener
-            adapter.onDayLongClickListener = this.onDayLongClickListener
 
             //페이져 초기화
             setCurrentItem(CalendarPagerAdapter.MAX_VALUE / 2, false) //현재위치 설정
@@ -58,24 +55,5 @@ open class CalendarViewPager(context: Context, attrs: AttributeSet? = null) : Vi
     }
 
 
-    //안쓰는 객체들
-    var onDayClickListener: ((Day) -> Unit)? = null
-        set(value) {
-            field = value
-            (adapter as? CalendarPagerAdapter)?.onDayClickListener = field
-        }
-    var onDayLongClickListener: ((Day) -> Boolean)? = null
-        set(value) {
-            field = value
-            (adapter as? CalendarPagerAdapter)?.onDayLongClickListener = field
-        }
-
-    //안쓰는 함수들
-    fun getCurrentCalendar(): Calendar? = (adapter as? CalendarPagerAdapter)?.getCalendar(currentItem)
-    fun moveItemBy(position: Int, smoothScroll: Boolean = true) {
-        if (position != 0) {
-            setCurrentItem(currentItem + position, smoothScroll)
-        }
-    }
 
 }

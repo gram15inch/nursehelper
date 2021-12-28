@@ -20,7 +20,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.techtown.nursehelper.databinding.FragmentHomeBinding
 import org.techtown.nursehelper.databinding.FragmentWritingBinding
-import org.techtown.nursehelper.databinding.HomeSectionBinding
 import java.text.SimpleDateFormat
 import java.util.*
 

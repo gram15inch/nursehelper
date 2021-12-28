@@ -29,12 +29,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class DayItemFragment(var day: Day) : Fragment() {
+open class DayItemFragment(var day: Day) : Fragment() {
     lateinit var binding : FragmentDayItemBinding
     lateinit var mainActivity : MainActivity
     val dayItemFormat = SimpleDateFormat("MM/dd HH:mm")
     // pagerAdapter 에서 생성후 초기화시 넘겨받음
-    var pagerAdapterReflesh : (()->Unit)? = null
+     lateinit var pagerAdapterReflesh : (()->Unit)
 
     var parseCal : Calendar
 
@@ -56,17 +56,10 @@ class DayItemFragment(var day: Day) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("day","dayViewCreated")
-        var dayUserItems = mainActivity.searchData(day.calendar.time)
-        var Adapter = setAdapter(dayUserItems)
-        //전체삭제 -test
-        binding.dayItemTxt.setOnClickListener {
-            for(dayUserItem in dayUserItems)
-                mainActivity.deleteUser(dayUserItem.idCode)
-            dayItemAdapterUpdate?.invoke(day)
-            pagerAdapterReflesh?.invoke()
-            //Adapter.notifyDataSetChanged()
-            Log.d("tst","Delete db")
-        }
+        val data = mainActivity.searchData(day.calendar.time)
+        setAdapter(mainActivity.sortData(data))
+
+
 
     }
 
@@ -87,7 +80,6 @@ class DayItemFragment(var day: Day) : Fragment() {
                 super.onAttachedToRecyclerView(recyclerView)
                 Users = users
             }
-
             override fun onBindViewHolder(holder: dayItemHolder, position: Int) {
                 //Log.d("day","dayTime ${Users[position].startTime}")
                 setBgColor(holder,Users[position].color)
@@ -104,7 +96,10 @@ class DayItemFragment(var day: Day) : Fragment() {
                 holder.binding.apply {
                     //스와이프뷰 설정
                     swipeView.setOnClickListener {
-                        var dayItemDetailFragment = DayItemDetailFragment(Users[position])
+                        var dayItemDetailFragment = DayItemDetailFragment(Users[position]).apply{
+                                pagerAdapterReflesh = this@DayItemFragment.pagerAdapterReflesh
+
+                        }
                         mainActivity.supportFragmentManager.beginTransaction().run{
                             replace(R.id.popUpContainer,dayItemDetailFragment)
                             addToBackStack("day_item_detail")
@@ -150,6 +145,7 @@ class DayItemFragment(var day: Day) : Fragment() {
 
 
         }
+
         binding.dayItemRcycleView.apply{
             adapter = Adapter
             layoutManager = LinearLayoutManager(mainActivity)

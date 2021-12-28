@@ -30,6 +30,9 @@ import org.techtown.nursehelper.databinding.ActivityMainBinding
 import java.util.*
 import kotlin.random.Random
 
+
+
+
 class MainActivity : AppCompatActivity() {
     val binding by lazy{ActivityMainBinding.inflate(layoutInflater)}
     val dbc :DBC
@@ -55,9 +58,9 @@ class MainActivity : AppCompatActivity() {
         Log.d("tstLife","onCreate")
 
 
+
         //nav init
         binding.bottomNavigatinView.setupWithNavController(navController)
-
 
 
         //login check
@@ -103,7 +106,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         //logout
-        binding.textUserInfo.setOnClickListener {
+        binding.textLogout.setOnClickListener {
             var pref = this.getSharedPreferences("userInfo", Context.MODE_PRIVATE)
             var edit = pref.edit()
             edit.remove("id")
@@ -197,6 +200,7 @@ class MainActivity : AppCompatActivity() {
         colorList.add(Color.parseColor("#FFF2E2C6"))
         return colorList
     }
+
     fun searchData(date: Date):List<userSchedule> {
         var searchedList: MutableList<userSchedule> = mutableListOf()
         var calData = Calendar.getInstance()
@@ -214,6 +218,23 @@ class MainActivity : AppCompatActivity() {
                 }
         }
         return searchedList
+    }
+
+    fun sortData(list: List<userSchedule>):List<userSchedule>{
+        val sort =mutableListOf<userSchedule>()
+        sort.addAll(list)
+        sort.sortWith(compareBy<userSchedule> { it.startTime }.thenBy { it.endTime }.thenBy { it.name })
+        return sort
+    }
+    fun insertSchedule(us: userSchedule):Int{
+        dbUserItems.add(us)
+        return 1
+    }
+
+    fun updateSchedule(us:userSchedule):Int{
+        dbUserItems.remove(us)
+        dbUserItems.add(us)
+        return 1
     }
     fun deleteUser(sid:Int){
         for(user in dbUserItems){
@@ -304,17 +325,16 @@ class MainActivity : AppCompatActivity() {
     }
     val loginSuccess  = object : (String,String)->Unit {
         override fun invoke(id:String,pw:String) {
-            //Log.d("tst","back entry:${}")
-            navController.popBackStack()
+            
             navController.navigate(R.id.homeFragment)
 
-            // id-pw 텍스트뷰에 저장
-            binding.textUserInfo.apply {
+            // id 텍스트뷰에 저장
+            binding.textLogout.apply {
                 val sp1: SharedPreferences = getSharedPreferences("userInfo", Context.MODE_PRIVATE)
 
                 val id = sp1.getString("id", null)
                 val pw = sp1.getString("pw", null)
-                text = "$id-$pw"
+                text = "$id 로그아웃"
             }
 
             //dbLoad

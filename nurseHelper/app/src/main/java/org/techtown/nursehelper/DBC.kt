@@ -287,9 +287,9 @@ class DBC(val mainActivity: MainActivity) {
         //html 에서 body 추출
         val body = Jsoup.parse(Html).text()
         when(body){
-            "success"-> return 1
-            "db drror"-> return -2
-            else -> return -3
+            "??? error"-> return -1
+            "db error"-> return -2
+            else ->  return body.toInt()
         }
     }
 

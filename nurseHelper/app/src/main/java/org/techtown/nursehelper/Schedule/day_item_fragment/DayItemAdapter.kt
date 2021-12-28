@@ -19,21 +19,15 @@ abstract class DayItemAdapter(var mainActivity: MainActivity):RecyclerView.Adapt
     var Users: List<userSchedule> by Delegates.observable(emptyList()) { _, old, new ->
         DayItemDiff(old, new).calculateDiff().dispatchUpdatesTo(this)
     }
-    /**adapter 안의 users를 업데이트하는함수를 객체화 시킴*/
-    /*var UserUpdate : ((List<userItem>) -> Unit)? = object :(List<userItem>)->Unit{
-        override fun invoke(users: List<userItem>) {
-            Users = users
-        }
-    }*/
+
     var UserUpdate : ((Day) -> Unit)? = object :(Day)->Unit{
                 override fun invoke(day: Day) {
-                    Users = mainActivity.searchData(day.calendar.time)
-        }
-    }
-        override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-            super.onAttachedToRecyclerView(recyclerView)
-        }
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int ): dayItemHolder {
+                    val data =mainActivity.searchData(day.calendar.time)
+                    Users = mainActivity.sortData(data)
+}
+}
+
+override fun onCreateViewHolder(parent: ViewGroup, viewType: Int ): dayItemHolder {
             val binding = DayItemSwipeBinding.inflate(LayoutInflater.from(parent.context),
             parent,
             false)
