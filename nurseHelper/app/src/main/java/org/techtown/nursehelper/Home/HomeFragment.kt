@@ -24,16 +24,24 @@ class HomeFragment : Fragment() {
     val binding by lazy{FragmentHomeBinding.inflate(layoutInflater)}
     val dateFormat = SimpleDateFormat("yyyyMMdd")
     val today = Calendar.getInstance()
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if(context is MainActivity) mainActivity = context
+        mainActivity = context as MainActivity
+
+
     }
 
 
+    override fun onResume() {
+        super.onResume()
+        //Log.d("tst","home : onResume")
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
+
         var todayAdapter = homeScheduleAdpater(mainActivity)
         binding.apply{
             texthomeTitle.text= "오늘일정"
@@ -41,37 +49,20 @@ class HomeFragment : Fragment() {
             homeRecyclerView.layoutManager = LinearLayoutManager(activity)
         }
 
-        CoroutineScope(Dispatchers.Main).launch {
-           var rt : List<userSchedule> = listOf()
-            CoroutineScope(Dispatchers.Default).async {
-                val sp1: SharedPreferences =  mainActivity.getSharedPreferences("userInfo", Context.MODE_PRIVATE)
-                var id = sp1.getString("id", null)
-                if(id==null){
-                    Log.d("tsthome","id = null")
-                }else {
-                    rt = mainActivity.searchData(today.time)
-                }
-            }.await()
 
-            when(rt.size){
-                //데이터 없음
-                 0-> {
-                    Log.d("tst","home : 값 없음")
-                }
-                //데이터 있음
-                else->{
-                    todayAdapter.Users =mainActivity.sortData(rt)
-                }
+        val homeUpdate =object: ()->Unit{
+            override fun invoke() {
+                  val  rt = mainActivity.searchData(today.time)
+                    todayAdapter?.Users =mainActivity.sortData(rt)
             }
-
 
         }
 
-    fun test1(){
-        Log.d("tst","test1 on")
-    }
+        mainActivity.homeUpdate = homeUpdate
+        homeUpdate.invoke()
 
         return binding.root
     }
+
 
 }

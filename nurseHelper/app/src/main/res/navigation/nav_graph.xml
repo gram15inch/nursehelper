@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@+id/scheduleFragment">
+    app:startDestination="@+id/homeFragment">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -20,9 +20,9 @@
         android:name="org.techtown.nursehelper.Schedule.ScheduleFragment"
         android:label="fragment_schedule"
         tools:layout="@layout/fragment_schedule" />
-       <!-- <fragment
-        android:id="@+id/StockFragment"
-        android:name="org.techtown.nursehelper.StockFragment"
+    <fragment
+        android:id="@+id/BlankFragment"
+        android:name="org.techtown.nursehelper.BlankFragment"
         android:label="fragment_stock"
-        tools:layout="@layout/fragment_stock" />-->
+        tools:layout="@layout/fragment_stock" />
 </navigation>

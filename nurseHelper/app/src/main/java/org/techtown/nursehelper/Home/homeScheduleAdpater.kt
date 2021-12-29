@@ -28,7 +28,7 @@ class homeScheduleAdpater(val mainActivity: MainActivity): RecyclerView.Adapter<
       }*/
     var UserUpdate : ((String) -> Unit)? = object :(String)->Unit{
         override fun invoke(day: String) {
-            //get users
+
             //Users = mainActivity.searchData(day.calendar.time)
         }
     }

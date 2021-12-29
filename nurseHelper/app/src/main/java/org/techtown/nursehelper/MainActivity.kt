@@ -10,11 +10,13 @@ import android.os.Looper
 import android.transition.Fade
 import android.transition.Transition
 import android.transition.TransitionManager
+import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -24,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.apache.commons.lang3.time.DateUtils
+import org.techtown.nursehelper.Home.HomeFragment
 import org.techtown.nursehelper.Login.loginFragment
 import org.techtown.nursehelper.Login.userResist
 import org.techtown.nursehelper.databinding.ActivityMainBinding
@@ -63,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigatinView.setupWithNavController(navController)
 
 
+
         //login check
         val userInfo = getSharedPreferences("userInfo", Context.MODE_PRIVATE)
         if(userInfo.getString("id",null)==null){//first login
@@ -92,6 +96,7 @@ class MainActivity : AppCompatActivity() {
                         //성공시
                         1 -> {Log.d("tst","loginSuccess")
                             loginSuccess(id,pw)
+
                         }
                         //실패시
                         0->{
@@ -289,7 +294,8 @@ class MainActivity : AppCompatActivity() {
                 //성공시
                 else-> {dbUserItems.clear()
                         dbUserItems.addAll(rt)
-                    Log.d("tstdb","dbUsers: ${dbUserItems[0]}")
+                    Log.d("tstdb","allDB update")
+                    homeUpdate?.invoke()
                 }
             }
         }
@@ -303,6 +309,8 @@ class MainActivity : AppCompatActivity() {
         else
             return id
     }
+    var homeUpdate  : (()->Unit)? =null
+
 
     //Login 객체함수
     val login  = object : (String,String)->Int{
@@ -325,8 +333,8 @@ class MainActivity : AppCompatActivity() {
     }
     val loginSuccess  = object : (String,String)->Unit {
         override fun invoke(id:String,pw:String) {
-            
-            navController.navigate(R.id.homeFragment)
+            //navController.popBackStack()
+
 
             // id 텍스트뷰에 저장
             binding.textLogout.apply {
@@ -334,7 +342,7 @@ class MainActivity : AppCompatActivity() {
 
                 val id = sp1.getString("id", null)
                 val pw = sp1.getString("pw", null)
-                text = "$id 로그아웃"
+                text = "로그아웃"
             }
 
             //dbLoad
@@ -382,6 +390,7 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         Log.d("tstlife","onStart")
+
     }
     override fun onResume() {
         super.onResume()
