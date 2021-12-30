@@ -225,10 +225,16 @@ class MainActivity : AppCompatActivity() {
         return searchedList
     }
 
-    fun sortData(list: List<userSchedule>):List<userSchedule>{
+    fun sortScheData(list: List<userSchedule>):List<userSchedule>{
         val sort =mutableListOf<userSchedule>()
         sort.addAll(list)
         sort.sortWith(compareBy<userSchedule> { it.startTime }.thenBy { it.endTime }.thenBy { it.name })
+        return sort
+    }
+    fun sortDocData(list: List<userDocument>):List<userDocument>{
+        val sort =mutableListOf<userDocument>()
+        sort.addAll(list)
+        sort.sortByDescending { it.date }
         return sort
     }
     fun insertSchedule(us: userSchedule):Int{

@@ -70,7 +70,6 @@ class WritingFragment(val cmd:Int) : Fragment() {
         //홈에서 호출
         }else if(cmd==2) {
             //업데이트시 사용할 코드
-            pCode = userSchedule.idCode
             Date = dateFormat.format(today.time)
 
             //수정금지 공백유무로 가져오는값이 다름
@@ -109,6 +108,10 @@ class WritingFragment(val cmd:Int) : Fragment() {
                             writeMemo.setText(rt[0].memo)
 
                         }
+                        pCode = rt[0].pCode
+                        Log.d("tst", " home pcode : $pCode")
+
+
                     }
                 }
             }
@@ -129,8 +132,10 @@ class WritingFragment(val cmd:Int) : Fragment() {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if(binding.writeRtBtn.visibility != View.VISIBLE)
+                    if(isEditMeno(cmd))
                         binding.writeRtBtn.visibility = View.VISIBLE
+                    else
+                        binding.writeRtBtn.visibility = View.GONE
                 }
 
                 override fun afterTextChanged(s: Editable?) { }
@@ -183,7 +188,8 @@ class WritingFragment(val cmd:Int) : Fragment() {
                 when (rt) {
                     //업데이트 정상
                     1 -> {Log.d("tst", "업데이트 정상")
-                    dateAdapter.invoke()
+                        if(cmd==1)
+                            dateAdapter.invoke()
                     }
                     else ->  Log.d("tst", "doc update Error")
 
@@ -232,5 +238,15 @@ class WritingFragment(val cmd:Int) : Fragment() {
             return mainActivity.dbc.inUpdateDocument(id,type,pcode,date,memo)}
     }
 
+    fun isEditMeno(mode:Int):Boolean{
+        when(mode){
+            1-> {
+                Log.d("tst","${Document.memo}/${binding.writeMemo.text}")
+               return !Document.memo.equals(binding.writeMemo.text)
+            }
+            2-> return binding.writeMemo.length() > 0
+            else -> return false
+        }
+    }
 
 }

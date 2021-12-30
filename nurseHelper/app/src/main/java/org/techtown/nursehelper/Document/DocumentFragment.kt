@@ -141,7 +141,7 @@ class DocumentFragment : Fragment() {
                 //실패시
                 null -> Log.d("tst","dbError")
                 //성공시
-                else-> Adapter.Documents = rt
+                else-> Adapter.Documents = mainActivity.sortDocData(rt)
 
             }
         }

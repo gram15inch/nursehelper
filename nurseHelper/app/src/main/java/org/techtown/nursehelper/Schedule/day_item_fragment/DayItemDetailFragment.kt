@@ -200,6 +200,7 @@ open class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
 
                         //일정업데이트
                         if(sUser!=null){
+                            Log.d("tst","sUser : pcode -1")
                             rt = mainActivity.dbc.inUpdateSchedule(
                                 id,
                                 sUserInUp.idCode.toString(),
@@ -210,6 +211,7 @@ open class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
                             )
                         //일정추가
                         }else{
+                            Log.d("tst","pUser: pcode ${pUser?.pCode}")
                             rt = mainActivity.dbc.inUpdateSchedule(
                                 id,
                                 "-1",

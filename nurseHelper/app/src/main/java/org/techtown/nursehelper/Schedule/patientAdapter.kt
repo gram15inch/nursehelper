@@ -1,6 +1,7 @@
 package org.techtown.nursehelper.Schedule
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -53,7 +54,7 @@ class patientAdapter(var mainActivity: MainActivity): RecyclerView.Adapter<patie
             keyFocusClear.invoke()
             mainActivity.supportFragmentManager.popBackStack("search_patient", 1)
            patientUpdate.invoke(user)
-
+        Log.d("tst","pA pno = ${user.pCode}")
 
         }
         }

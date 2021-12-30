@@ -32,16 +32,16 @@ class DBC(val mainActivity: MainActivity) {
         var Html =""
 
         // jsp에 http연결
-        var urlStr =rootPath+"verifyUser.jsp"
-        var url = URL(urlStr)
+        val urlStr =rootPath+"verifyUser.jsp"
+        val url = URL(urlStr)
         val httpClient = url.openConnection() as HttpURLConnection
 
         setCookieHeader(httpClient)
         httpClient.setRequestMethod("POST") // URL 요청에 대한 메소드 설정 : POST.
         httpClient.setRequestProperty("Accept-Charset", "UTF-8") // Accept-Charset 설정.
         httpClient.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;charset=UTF-8")
-        var para = "id=$id&pw=$pw"
-        var os = OutputStreamWriter(httpClient.outputStream)
+        val para = "id=$id&pw=$pw"
+        val os = OutputStreamWriter(httpClient.outputStream)
         os.write(para)
         os.flush()
 

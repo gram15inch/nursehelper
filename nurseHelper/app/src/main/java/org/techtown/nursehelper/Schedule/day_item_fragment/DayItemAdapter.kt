@@ -6,12 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import org.techtown.nursehelper.MainActivity
 import org.techtown.nursehelper.calendarviewpager.Day
 import org.techtown.nursehelper.databinding.DayItemSwipeBinding
-import org.techtown.nursehelper.databinding.UserItemBinding
 import org.techtown.nursehelper.userSchedule
 import kotlin.properties.Delegates
-import android.R
-import android.util.Log
-import android.view.View
 
 
 abstract class DayItemAdapter(var mainActivity: MainActivity):RecyclerView.Adapter<DayItemAdapter.dayItemHolder>(){
@@ -23,7 +19,7 @@ abstract class DayItemAdapter(var mainActivity: MainActivity):RecyclerView.Adapt
     var UserUpdate : ((Day) -> Unit)? = object :(Day)->Unit{
                 override fun invoke(day: Day) {
                     val data =mainActivity.searchData(day.calendar.time)
-                    Users = mainActivity.sortData(data)
+                    Users = mainActivity.sortScheData(data)
 }
 }
 

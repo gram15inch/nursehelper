@@ -12,7 +12,6 @@ import org.techtown.nursehelper.MainActivity
 import org.techtown.nursehelper.Schedule.calendar_viewpager.MonthItemDiff
 import org.techtown.nursehelper.databinding.DOMItemBinding
 import org.techtown.nursehelper.userSchedule
-import org.techtown.nursehelper.userScheduleDiff
 import java.util.*
 import kotlin.properties.Delegates
 
@@ -117,7 +116,7 @@ abstract class CalendarCellAdapter : RecyclerView.Adapter<CalendarCellAdapter.do
 
         fun onBindHolder(day: Day,users :List<userSchedule>) {
 
-            var dayUserItems = (context as MainActivity).sortData(users)
+            var dayUserItems = (context as MainActivity).sortScheData(users)
             binding.textDay.text = when (day.state) {
                 DayState.ThisMonth -> day.calendar.get(Calendar.DAY_OF_MONTH).toString()
                 else -> day.calendar.get(Calendar.DAY_OF_MONTH).toString()

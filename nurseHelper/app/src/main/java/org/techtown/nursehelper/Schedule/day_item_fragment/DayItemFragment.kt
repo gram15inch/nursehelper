@@ -1,12 +1,10 @@
 package org.techtown.nursehelper.Schedule.day_item_fragment
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -22,7 +20,6 @@ import org.techtown.nursehelper.R
 
 import org.techtown.nursehelper.calendarviewpager.Day
 import org.techtown.nursehelper.databinding.FragmentDayItemBinding
-import org.techtown.nursehelper.userDocument
 import org.techtown.nursehelper.userSchedule
 import java.text.SimpleDateFormat
 
@@ -57,7 +54,7 @@ open class DayItemFragment(var day: Day) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d("day","dayViewCreated")
         val data = mainActivity.searchData(day.calendar.time)
-        setAdapter(mainActivity.sortData(data))
+        setAdapter(mainActivity.sortScheData(data))
 
 
 
