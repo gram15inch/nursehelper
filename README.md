@@ -16,7 +16,8 @@
 ### 문서 검색
 
 <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="608" width="360">
-이름/주소/환자번호 탭중 하나를 선택하고 일자를 선택시 그에맞는 문서검색
+
+* 이름/주소/환자번호 탭중 하나를 선택하고 일자를 선택시 그에맞는 문서검색
 
 ### 문서 수정 
 
@@ -30,22 +31,27 @@
 ### 일정 검색
  
 <img src="https://user-images.githubusercontent.com/94951889/147815536-229feeff-62db-4c62-a7bf-17a2c2b919d8.gif"  height="608" width="360">
-밀어서 달력을 이동한 후 날짜를 클릭하면 해당날짜의 일정 표시
+
+* 밀어서 달력을 이동한 후 날짜를 클릭하면 해당날짜의 일정 표시
 
 ### 일정 추가/삭제
  
 <img src="https://user-images.githubusercontent.com/94951889/147815089-8b999015-02c5-4760-94bd-80ecea53b0c5.gif"  height="608" width="360">
-추가 버튼으로 추가한 후 밀어서 삭제
+
+* 추가 버튼으로 추가한 후 밀어서 삭제
 
 ### 일정 수정
  
 <img src="https://user-images.githubusercontent.com/94951889/147814086-72f19005-f83d-4eb0-92d2-5a6b47226aee.gif"  height="608" width="360">
-해당일정을 클릭후 수정  
+
+* 이름 수정시 db에 있는 사람중 선택
+* 주소는 사람을 선택하면 자동으로 주입
   
 ## 사용자 인증
 ### 회원가입/로그인/로그아웃
  
  <img src="https://user-images.githubusercontent.com/94951889/147814088-4836e414-e73c-40b4-a860-2305bd87995d.gif"  height="608" width="360">
-* 아이디 중복확인/ 비밀번호 확인
-* 계정생성시 id별 db가 따로생성
+ 
+ * 아이디 중복확인/ 비밀번호 확인
+ * 계정생성시 id별 db가 따로생성
 
