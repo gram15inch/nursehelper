@@ -20,7 +20,7 @@
 
 ### 문서 수정 
 
-<img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="608" width="360">
+<img src="https://user-images.githubusercontent.com/94951889/147814078-d5744c63-e696-47ee-98cd-935a0142ec97.gif"  height="608" width="360">
 
 
 ### 문서 추가
