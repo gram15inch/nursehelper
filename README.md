@@ -27,7 +27,7 @@
 ## 일정탭
 * 일정 검색
  
-<img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="608" width="360">
+<img src="https://user-images.githubusercontent.com/94951889/147815536-229feeff-62db-4c62-a7bf-17a2c2b919d8.gif"  height="608" width="360">
 
 * 일정 추가/수정
  
