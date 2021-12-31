@@ -35,11 +35,11 @@
 
 * 일정 수정
  
-<img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="608" width="360">
+<img src="https://user-images.githubusercontent.com/94951889/147814086-72f19005-f83d-4eb0-92d2-5a6b47226aee.gif"  height="608" width="360">
   
 ## 사용자 인증
  * 회원가입/로그인/로그아웃
  
- <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="608" width="360">
+ <img src="https://user-images.githubusercontent.com/94951889/147814088-4836e414-e73c-40b4-a860-2305bd87995d.gif"  height="608" width="360">
 
 
