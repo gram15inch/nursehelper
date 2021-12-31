@@ -9,8 +9,9 @@
 ## 문서관리
 * 문서 검색
   - 카테고리별 검색
+   <img src="https://user-images.githubusercontent.com/94951889/147647251-af99c207-ff4c-4102-a6c5-6c430151577b.gif"  height="700" width="350" >
    ![Animation](https://user-images.githubusercontent.com/94951889/147647251-af99c207-ff4c-4102-a6c5-6c430151577b.gif)
-   <img src="https://user-images.githubusercontent.com/94951889/147647251-af99c207-ff4c-4102-a6c5-6c430151577b.gif"  width="600" height="300">
+
 * 문서 수정 
  - 홈탭에서 수정
    
