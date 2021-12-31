@@ -8,6 +8,7 @@
 
 ## 홈탭
 * 오늘일정 확인
+
 <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="608" width="360"> 어플을 키자마자 수정할 수 있도록 홈탭에서 일정 클릭시 문서작성 화면으로 바로넘어감
 
 ## 문서탭
