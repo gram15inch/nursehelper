@@ -523,7 +523,8 @@ class DBC(val mainActivity: MainActivity) {
         when(body){
             "성공"-> return 1
             "실패"-> return 0
-            else -> return -1
+            "id불일치"->return -1
+            else -> return -2
         }
 
 

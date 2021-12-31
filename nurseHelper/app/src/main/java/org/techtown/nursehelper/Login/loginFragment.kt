@@ -77,7 +77,7 @@ class loginFragment : Fragment() {
                         loginSuccess(id,pw)
                     }
                     //실패시
-                    0->{Toast.makeText(mainActivity,"아이디 혹은 비밀번호가 잘못되었습니다.", Toast.LENGTH_SHORT).show()}
+                    -1->{Toast.makeText(mainActivity,"아이디 혹은 비밀번호가 잘못되었습니다.", Toast.LENGTH_SHORT).show()}
                     else->{Toast.makeText(mainActivity,"오류 code:$rt", Toast.LENGTH_SHORT).show()}
                 }
             }

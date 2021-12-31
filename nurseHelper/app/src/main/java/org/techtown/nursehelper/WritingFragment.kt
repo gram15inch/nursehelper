@@ -106,7 +106,6 @@ class WritingFragment(val cmd:Int) : Fragment() {
                             writeDom.text = dateFormat.format(userSchedule.birth)
                             writeSex.text = rt[0].sex
                             writeMemo.setText(rt[0].memo)
-
                         }
                         pCode = rt[0].pCode
                         Log.d("tst", " home pcode : $pCode")

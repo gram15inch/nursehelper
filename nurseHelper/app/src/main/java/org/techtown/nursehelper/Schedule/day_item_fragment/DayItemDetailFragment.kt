@@ -321,6 +321,7 @@ open class DayItemDetailFragment(var sUser : userSchedule? =null) : Fragment() {
             binding.textEndDate.text = dateF.format(et.time)
             binding.textEndTime.text = timeF.format(et.time)
             Log.d("tst","valid check F: ${timeF.format(sc.time)} ${timeF.format(ec.time)}")
+            showSaveBtn(1)
             return 0
         }
 
