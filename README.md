@@ -6,16 +6,15 @@
 * 일정 관리
 * 사용자 인증
 
-##홈탭
+## 홈탭
 * 오늘일정 확인
-  <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="608" width="360"> 어플을 키자마자 수정할 수 있도록 홈탭에서 일정 클릭시 문서작성 화면으로 바로넘어감
+<img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="608" width="360"> 어플을 키자마자 수정할 수 있도록 홈탭에서 일정 클릭시 문서작성 화면으로 바로넘어감
 
 ## 문서탭
 * 문서 검색
- - 카테고리별 검색
-   <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="608" width="360">
+<img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="608" width="360">
 * 문서 수정 
-   <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="608" width="360">
+<img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="608" width="360">
 * 문서 추가
  - 일정생성시 자동생성
 
