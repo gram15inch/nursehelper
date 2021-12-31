@@ -13,14 +13,14 @@
 
 <img src="https://user-images.githubusercontent.com/94951889/147814082-f3c66317-5b76-4037-8a71-ca30bc27b2cd.gif"  height="608" width="360"> 
 
-* 어플을 켜자마자 수정할 수 있도록 홈탭에서 일정 클릭시 문서작성 화면으로 바로넘어감
+어플을 켜자마자 수정할 수 있도록 홈탭에서 일정 클릭시 문서작성 화면으로 바로넘어감
 
 ## 문서탭
 ### 문서 검색
 
 <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="608" width="360">
 
-* 이름/주소/환자번호 탭중 하나를 선택하고 기간을 선택시 그에맞는 문서검색
+이름/주소/환자번호 탭중 하나를 선택하고 기간을 선택시 그에맞는 문서검색
 
 ### 문서 수정 
 
@@ -41,9 +41,9 @@
  
 <img src="https://user-images.githubusercontent.com/94951889/147815089-8b999015-02c5-4760-94bd-80ecea53b0c5.gif"  height="608" width="360">
 
-추가 버튼으로 추가한 후 밀어서 삭제 </br>
-환자이름 작성시 db에 있는 사람중 선택 </br>
-주소는 사람을 선택하면 자동으로 주입 </br>
+추가 버튼으로 추가한 후 밀어서 삭제 </br></br>
+환자이름 작성시 db에 있는 사람중 선택 </br></br>
+주소는 사람을 선택하면 자동으로 주입 </br></br>
 
 ### 일정 수정
  
@@ -55,6 +55,6 @@
  
  <img src="https://user-images.githubusercontent.com/94951889/147814088-4836e414-e73c-40b4-a860-2305bd87995d.gif"  height="608" width="360">
  
- 아이디 중복확인/ 비밀번호 확인 </br>
- 계정생성시 id별 db가 따로생성 </br>
+ 아이디 중복확인/ 비밀번호 확인 </br></br>
+ 계정생성시 id별 db가 따로생성 </br></br>
 
