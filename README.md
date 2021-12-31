@@ -9,29 +9,27 @@
 ## 문서관리
 * 문서 검색
   - 카테고리별 검색
-   <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="600" width="300" >
-   ![Animation](https://user-images.githubusercontent.com/94951889/147647251-af99c207-ff4c-4102-a6c5-6c430151577b.gif)
-
+   <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="600" width="300">
 * 문서 수정 
  - 홈탭에서 수정
-   
+   <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="600" width="300">
  - 문서탭에서 수정
- 
+   <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="600" width="300">
 * 문서 추가
  - 일정생성시 자동생성
-
+  <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="600" width="300">
 
 ## 일정관리
  * 일정 검색
- 
+  <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="600" width="300">
  * 일정 추가
- 
+  <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="600" width="300">
  * 일정 수정
- 
+  <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="600" width="300">
  * 일정 삭제
-
+  <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="600" width="300">
 ## 사용자 인증
  * 회원가입/로그인/로그아웃
- 
+  <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="600" width="300">
 
 
