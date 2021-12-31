@@ -15,20 +15,22 @@
 * 문서 검색
 
 <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="608" width="360">
+
 * 문서 수정 
 
 <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="608" width="360">
+
 * 문서 추가
  - 일정생성시 자동생성
 
 ## 일정탭
- * 일정 검색
+* 일정 검색
  
 <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="608" width="360">
- * 일정 추가/수정
+* 일정 추가/수정
  
 <img src="https://user-images.githubusercontent.com/94951889/147815089-8b999015-02c5-4760-94bd-80ecea53b0c5.gif"  height="608" width="360">
- * 일정 수정
+* 일정 수정
  
 <img src="https://user-images.githubusercontent.com/94951889/147814060-8a1f03fa-6932-45fd-962f-b89d222e226e.gif"  height="608" width="360">
   
