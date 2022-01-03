@@ -42,7 +42,7 @@ class WritingFragment(val cmd:Int) : Fragment() {
     //호출위치에 따라 초기화
     var pCode =-1
     var Date = ""
-    var Memo :String = ""
+    var Memo :String = "#null"
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if(context is MainActivity) mainActivity = context
@@ -137,12 +137,12 @@ class WritingFragment(val cmd:Int) : Fragment() {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if(isEditMeno(cmd) && !Memo.equals(""))
-                        binding.writeRtBtn.visibility = View.VISIBLE
+                    if(isEditMeno(cmd) && !Memo.equals("#null"))
+                            binding.writeRtBtn.visibility = View.VISIBLE
                     else
                         binding.writeRtBtn.visibility = View.GONE
 
-                    Log.d("tst","bool : ${isEditMeno(cmd) } && ${ !Memo.equals("")}")
+                    Log.d("tst","bool : ${isEditMeno(cmd) } && ${ !Memo.equals("")||(!binding.writeMemo.text.toString().equals(""))}")
                 }
 
                 override fun afterTextChanged(s: Editable?) { }
@@ -156,7 +156,7 @@ class WritingFragment(val cmd:Int) : Fragment() {
             if (hasFocus) {
                 if(wfHeight == -1) {
                     wfHeight = this.view?.height?:0
-                    Log.d("tst", "wfHeight : $wfHeight")
+                   // Log.d("tst", "wfHeight : $wfHeight")
                 }
             }
             else
