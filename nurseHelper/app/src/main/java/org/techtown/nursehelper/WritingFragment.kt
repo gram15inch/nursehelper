@@ -42,6 +42,7 @@ class WritingFragment(val cmd:Int) : Fragment() {
     //호출위치에 따라 초기화
     var pCode =-1
     var Date = ""
+    var Memo :String = ""
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if(context is MainActivity) mainActivity = context
@@ -55,6 +56,7 @@ class WritingFragment(val cmd:Int) : Fragment() {
 
         //문서 관리 탭에서 호출
         if(cmd == 1){
+            Log.d("tst","doc call")
             binding.apply {
                 writeName.text = Document.name
                 writeAddr.text = Document.addr
@@ -69,14 +71,16 @@ class WritingFragment(val cmd:Int) : Fragment() {
 
         //홈에서 호출
         }else if(cmd==2) {
+            Log.d("tst","home call")
             //업데이트시 사용할 코드
             Date = dateFormat.format(today.time)
 
-            //수정금지 공백유무로 가져오는값이 다름
+            //---- 수정금지 공백유무로 가져오는값이 다름
             var name = userSchedule.name
             var addr = ""
             var pcode = ""
             var date = dateFormat.format(today.time)
+            // -----
 
             CoroutineScope(Dispatchers.Main).launch {
                 lateinit var rt: List<userDocument>
@@ -90,6 +94,7 @@ class WritingFragment(val cmd:Int) : Fragment() {
 
                     //값이 없을시
                     0 -> binding.apply {
+                        Log.d("tst","rt : size(0)")
                         writeName.text = userSchedule.name
                         writeAddr.text = userSchedule.addr
                         writeDom.text = dateFormat.format(userSchedule.birth)
@@ -103,12 +108,13 @@ class WritingFragment(val cmd:Int) : Fragment() {
                         binding.apply {
                             writeName.text = rt[0].name
                             writeAddr.text = rt[0].addr
-                            writeDom.text = dateFormat.format(userSchedule.birth)
+                            writeDom.text = dateFormat.format(rt[0].birth)
                             writeSex.text = rt[0].sex
                             writeMemo.setText(rt[0].memo)
                         }
                         pCode = rt[0].pCode
-                        Log.d("tst", " home pcode : $pCode")
+                        Memo = rt[0].memo
+                        Log.d("tst", " home pcode : $pCode / $Memo")
 
 
                     }
@@ -131,10 +137,12 @@ class WritingFragment(val cmd:Int) : Fragment() {
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if(isEditMeno(cmd))
+                    if(isEditMeno(cmd) && !Memo.equals(""))
                         binding.writeRtBtn.visibility = View.VISIBLE
                     else
                         binding.writeRtBtn.visibility = View.GONE
+
+                    Log.d("tst","bool : ${isEditMeno(cmd) } && ${ !Memo.equals("")}")
                 }
 
                 override fun afterTextChanged(s: Editable?) { }
@@ -164,7 +172,8 @@ class WritingFragment(val cmd:Int) : Fragment() {
 
         //완료 버튼
         binding.writeRtBtn.setOnClickListener {
-
+            if(pCode == -1)
+                return@setOnClickListener
             //키보드 내리고 포커스 해제
             val imm: InputMethodManager = mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow( mainActivity.currentFocus?.windowToken, 0)
@@ -178,6 +187,7 @@ class WritingFragment(val cmd:Int) : Fragment() {
             CoroutineScope(Dispatchers.Main).launch {
                 var rt: Int = -1
                 CoroutineScope(Dispatchers.Default).async {
+                    Log.d("tstUp", "update pCode : $pCode")
                     rt = updateDocument("1", //추후 type별 검색시 수정
                         pCode.toString(),
                         Date,
@@ -239,12 +249,12 @@ class WritingFragment(val cmd:Int) : Fragment() {
 
     fun isEditMeno(mode:Int):Boolean{
         when(mode){
-            1-> {
-                Log.d("tst","${Document.memo}/${binding.writeMemo.text}")
-               return !Document.memo.equals(binding.writeMemo.text)
-            }
-            2-> return binding.writeMemo.length() > 0
-            else -> return false
+            1-> return !Document.memo.equals(binding.writeMemo.text.toString())
+
+            2-> return !Memo.equals(binding.writeMemo.text.toString())
+            else -> {
+                Log.d("tst","mode $mode")
+                return false}
         }
     }
 
