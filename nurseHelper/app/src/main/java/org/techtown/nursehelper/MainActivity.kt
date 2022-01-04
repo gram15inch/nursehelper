@@ -156,47 +156,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //--
-
-    fun createData():MutableList<userSchedule>{
-        var userItems = mutableListOf<userSchedule>()
-        var colors = createColor()
-        var start = Calendar.getInstance()
-        var end = Calendar.getInstance()
-        start.time = now.time
-        end.time = now.time
-
-        var rand = Random(Calendar.getInstance().timeInMillis)
-        var randI = 0
-        var randC = 0
-        var count = 0
-        for(month in 7..9) {
-            start.set(android.icu.util.Calendar.MONTH,month)
-            for (day in 1..31) {
-                randI = rand.nextInt(0, 7)
-
-                for (no in 1..randI) {
-                    randC = rand.nextInt(0, 4)
-                    start.set(android.icu.util.Calendar.DAY_OF_MONTH, day)
-                    start.set(android.icu.util.Calendar.HOUR_OF_DAY, 10 + no)
-                    var sex = when(randI%2){
-                        1-> "M"
-                        else-> "F"
-                    }
-                    end.time = start.time
-                    end.add(Calendar.HOUR,1)
-                    var user = userSchedule(++count,
-                        "name$day($no)",
-                        "addr$no",
-                        start.time,end.time, sex, end.time,
-                        colors.get(randC))
-                    //Log.d("tst","${user.startTime}/${user.color}")
-                    userItems.add(user)
-                }
-            }
-        }
-        return userItems
-    }
+   
     fun createColor():MutableList<Int>{
         var colorList = mutableListOf<Int>()
         colorList.add(Color.parseColor("#FFFB9DA7"))
