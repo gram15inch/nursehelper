@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-   
+
     fun createColor():MutableList<Int>{
         var colorList = mutableListOf<Int>()
         colorList.add(Color.parseColor("#FFFB9DA7"))
